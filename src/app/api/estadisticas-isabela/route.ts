@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
 
+type Conversation = {
+  call_duration_secs?: number;
+  call_successful?: string;
+  // agrega aquí otros campos si los necesitas
+};
+
 export async function GET() {
   const API_KEY = process.env.ELEVENLABS_API_KEY || 'YOUR_API_KEY';
   const AGENT_ID = 'agent_01jyqdepnrf1x9wfrt9kkyy84t';
@@ -22,7 +28,7 @@ export async function GET() {
 
     // Estadísticas agregadas
     const total_calls = conversations.length;
-    const total_minutes = Math.round(conversations.reduce((acc: number, c: any) => acc + (c.call_duration_secs || 0), 0) / 60);
+    const total_minutes = Math.round(conversations.reduce((acc: number, c: Conversation) => acc + (c.call_duration_secs || 0), 0) / 60);
     const exitosas = conversations.filter(c => c.call_successful === 'success').length;
     const fallidas = conversations.filter(c => c.call_successful === 'failure').length;
     const desconocidas = conversations.filter(c => c.call_successful === 'unknown').length;

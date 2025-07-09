@@ -57,20 +57,16 @@ export default function DashboardIsabela() {
             <span className="text-2xl font-bold">{stats.total_minutes ?? '-'}</span>
           </div>
           <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">Llamadas Rechazadas</span>
-            <span className="text-2xl font-bold">{stats.rejected_calls ?? '-'}</span>
+            <span className="text-gray-500">Llamadas Exitosas</span>
+            <span className="text-2xl font-bold">{stats.exitosas ?? '-'}</span>
           </div>
           <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">No Contestadas</span>
-            <span className="text-2xl font-bold">{stats.unanswered_calls ?? '-'}</span>
+            <span className="text-gray-500">Llamadas Fallidas</span>
+            <span className="text-2xl font-bold">{stats.fallidas ?? '-'}</span>
           </div>
           <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">Ocupadas</span>
-            <span className="text-2xl font-bold">{stats.busy_calls ?? '-'}</span>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">Fallidas</span>
-            <span className="text-2xl font-bold">{stats.failed_calls ?? '-'}</span>
+            <span className="text-gray-500">Desconocidas</span>
+            <span className="text-2xl font-bold">{stats.desconocidas ?? '-'}</span>
           </div>
         </div>
       )}
