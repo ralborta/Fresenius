@@ -21,6 +21,7 @@ export default function DashboardIsabela() {
     fetch("/api/estadisticas-isabela")
       .then((res) => res.json())
       .then((data) => {
+        console.log('Respuesta de la API /api/estadisticas-isabela:', data); // Log temporal
         setStats(data);
         setLoading(false);
       })
