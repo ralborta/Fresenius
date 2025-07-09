@@ -12,7 +12,7 @@ interface Estadisticas {
   unanswered_calls?: number;
   busy_calls?: number;
   failed_calls?: number;
-  [key: string]: unknown;
+  [key: string]: number | undefined;
 }
 
 export default function DashboardIsabela() {
