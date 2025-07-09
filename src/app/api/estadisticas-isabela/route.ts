@@ -29,9 +29,9 @@ export async function GET() {
     // Estadísticas agregadas
     const total_calls = conversations.length;
     const total_minutes = Math.round(conversations.reduce((acc: number, c: Conversation) => acc + (c.call_duration_secs || 0), 0) / 60);
-    const exitosas = conversations.filter(c => c.call_successful === 'success').length;
-    const fallidas = conversations.filter(c => c.call_successful === 'failure').length;
-    const desconocidas = conversations.filter(c => c.call_successful === 'unknown').length;
+    const exitosas = conversations.filter((c: Conversation) => c.call_successful === 'success').length;
+    const fallidas = conversations.filter((c: Conversation) => c.call_successful === 'failure').length;
+    const desconocidas = conversations.filter((c: Conversation) => c.call_successful === 'unknown').length;
 
     return NextResponse.json({
       total_calls,
