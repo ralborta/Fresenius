@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 interface Estadisticas {
   total_calls?: number;
@@ -50,26 +52,86 @@ export default function DashboardIsabela() {
       {loading && <p>Cargando estadísticas...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {stats && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl">
-          <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">Llamadas Totales</span>
-            <span className="text-2xl font-bold">{stats.total_calls ?? '-'}</span>
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-8 w-full max-w-6xl">
+          <div className="flex flex-col items-center">
+            <div className="w-28 h-28 mb-2">
+              <CircularProgressbar
+                value={stats.total_calls ?? 0}
+                maxValue={200}
+                text={`${stats.total_calls ?? '-'}`}
+                styles={buildStyles({
+                  pathColor: '#2563eb',
+                  textColor: '#2563eb',
+                  trailColor: '#e0e7ef',
+                  textSize: '1.5rem',
+                })}
+              />
+            </div>
+            <span className="text-gray-700 font-semibold">Llamadas Totales</span>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">Minutos Totales</span>
-            <span className="text-2xl font-bold">{stats.total_minutes ?? '-'}</span>
+          <div className="flex flex-col items-center">
+            <div className="w-28 h-28 mb-2">
+              <CircularProgressbar
+                value={stats.total_minutes ?? 0}
+                maxValue={500}
+                text={`${stats.total_minutes ?? '-'}`}
+                styles={buildStyles({
+                  pathColor: '#059669',
+                  textColor: '#059669',
+                  trailColor: '#e0e7ef',
+                  textSize: '1.5rem',
+                })}
+              />
+            </div>
+            <span className="text-gray-700 font-semibold">Minutos Totales</span>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">Llamadas Exitosas</span>
-            <span className="text-2xl font-bold">{stats.exitosas ?? '-'}</span>
+          <div className="flex flex-col items-center">
+            <div className="w-28 h-28 mb-2">
+              <CircularProgressbar
+                value={stats.exitosas ?? 0}
+                maxValue={stats.total_calls ?? 100}
+                text={`${stats.exitosas ?? '-'}`}
+                styles={buildStyles({
+                  pathColor: '#22c55e',
+                  textColor: '#22c55e',
+                  trailColor: '#e0e7ef',
+                  textSize: '1.5rem',
+                })}
+              />
+            </div>
+            <span className="text-gray-700 font-semibold">Exitosas</span>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">Llamadas Fallidas</span>
-            <span className="text-2xl font-bold">{stats.fallidas ?? '-'}</span>
+          <div className="flex flex-col items-center">
+            <div className="w-28 h-28 mb-2">
+              <CircularProgressbar
+                value={stats.fallidas ?? 0}
+                maxValue={stats.total_calls ?? 100}
+                text={`${stats.fallidas ?? '-'}`}
+                styles={buildStyles({
+                  pathColor: '#ef4444',
+                  textColor: '#ef4444',
+                  trailColor: '#e0e7ef',
+                  textSize: '1.5rem',
+                })}
+              />
+            </div>
+            <span className="text-gray-700 font-semibold">Fallidas</span>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-            <span className="text-gray-500">Desconocidas</span>
-            <span className="text-2xl font-bold">{stats.desconocidas ?? '-'}</span>
+          <div className="flex flex-col items-center">
+            <div className="w-28 h-28 mb-2">
+              <CircularProgressbar
+                value={stats.desconocidas ?? 0}
+                maxValue={stats.total_calls ?? 100}
+                text={`${stats.desconocidas ?? '-'}`}
+                styles={buildStyles({
+                  pathColor: '#64748b',
+                  textColor: '#64748b',
+                  trailColor: '#e0e7ef',
+                  textSize: '1.5rem',
+                })}
+              />
+            </div>
+            <span className="text-gray-700 font-semibold">Desconocidas</span>
           </div>
         </div>
       )}
