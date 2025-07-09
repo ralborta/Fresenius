@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,12 +38,12 @@ export default function RootLayout({
                 <span className="text-2xl font-bold text-yellow-500">Isabela</span>
               </div>
               <nav className="flex flex-col gap-2">
-                <a href="/" className="flex items-center gap-2 px-3 py-2 rounded text-gray-700 hover:bg-blue-50 font-medium">
+                <Link href="/" className="flex items-center gap-2 px-3 py-2 rounded text-gray-700 hover:bg-blue-50 font-medium">
                   <span>🏠</span> Dashboard
-                </a>
-                <a href="#" className="flex items-center gap-2 px-3 py-2 rounded text-gray-700 hover:bg-blue-50 font-medium">
+                </Link>
+                <Link href="#" className="flex items-center gap-2 px-3 py-2 rounded text-gray-700 hover:bg-blue-50 font-medium">
                   <span>📞</span> Llamadas
-                </a>
+                </Link>
               </nav>
             </div>
             <div className="flex items-center gap-3 px-3 py-2 rounded bg-gray-100">
