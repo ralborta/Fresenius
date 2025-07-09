@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 interface Estadisticas {
   total_calls?: number;
   total_minutes?: number;
+  exitosas?: number;
+  fallidas?: number;
+  desconocidas?: number;
   rejected_calls?: number;
   unanswered_calls?: number;
   busy_calls?: number;
