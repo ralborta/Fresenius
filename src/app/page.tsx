@@ -16,6 +16,7 @@ export default function DashboardIsabela() {
   const [stats, setStats] = useState<Estadisticas | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [contador, setContador] = useState(0);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
@@ -33,6 +34,15 @@ export default function DashboardIsabela() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-8">
+      <div className="mb-4 flex flex-col items-center">
+        <span className="text-lg font-semibold">Contador de prueba: {contador}</span>
+        <button
+          className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          onClick={() => setContador(contador + 1)}
+        >
+          Incrementar
+        </button>
+      </div>
       <h1 className="text-3xl font-bold mb-6">Dashboard de Isabela</h1>
       {loading && <p>Cargando estadísticas...</p>}
       {error && <p className="text-red-500">{error}</p>}
