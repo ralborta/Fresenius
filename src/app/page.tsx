@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
+interface Conversation {
+  call_duration_secs?: number;
+  call_successful?: string;
+  // otros campos si los necesitas
+}
+
 interface Estadisticas {
   total_calls?: number;
   total_minutes?: number;
@@ -14,8 +20,8 @@ interface Estadisticas {
   unanswered_calls?: number;
   busy_calls?: number;
   failed_calls?: number;
-  conversations?: any[]; // Added for new metrics
-  [key: string]: number | undefined | any;
+  conversations?: Conversation[];
+  [key: string]: number | Conversation[] | undefined;
 }
 
 const INDICADORES = [
@@ -89,7 +95,7 @@ export default function DashboardIsabela() {
   let duracionMax = 0;
   let duracionMin = 0;
   if (stats && Array.isArray(stats.conversations) && stats.conversations.length > 0) {
-    const duraciones = stats.conversations.map((c: any) => c.call_duration_secs || 0);
+    const duraciones = stats.conversations.map((c: Conversation) => c.call_duration_secs || 0);
     duracionMax = Math.max(...duraciones);
     duracionMin = Math.min(...duraciones);
   }
