@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-[#18122B] via-[#1E1A36] to-[#232046] text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#181818] text-white`}
       >
         <div className="flex min-h-screen">
           {/* Sidebar oscuro */}
