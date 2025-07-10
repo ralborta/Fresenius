@@ -31,32 +31,32 @@ const INDICADORES = [
   {
     key: 'total_calls',
     label: 'Total Calls',
-    color: 'from-pink-500 via-fuchsia-500 to-pink-700',
-    pathColor: '#f472b6',
-    textColor: '#fff',
-    shadow: 'shadow-pink-900/40',
-  },
-  {
-    key: 'total_minutes',
-    label: 'Total Minutes',
     color: 'from-blue-500 via-blue-400 to-blue-700',
-    pathColor: '#38bdf8',
+    pathColor: '#3b82f6',
     textColor: '#fff',
     shadow: 'shadow-blue-900/40',
   },
   {
+    key: 'total_minutes',
+    label: 'Total Minutes',
+    color: 'from-cyan-500 via-cyan-400 to-cyan-700',
+    pathColor: '#06b6d4',
+    textColor: '#fff',
+    shadow: 'shadow-cyan-900/40',
+  },
+  {
     key: 'exitosas',
     label: 'Successful',
-    color: 'from-green-500 via-emerald-500 to-green-700',
-    pathColor: '#34d399',
+    color: 'from-emerald-500 via-emerald-400 to-emerald-700',
+    pathColor: '#10b981',
     textColor: '#fff',
-    shadow: 'shadow-green-900/40',
+    shadow: 'shadow-emerald-900/40',
   },
   {
     key: 'fallidas',
     label: 'Failed',
-    color: 'from-orange-500 via-amber-500 to-orange-700',
-    pathColor: '#f59e42',
+    color: 'from-orange-500 via-orange-400 to-orange-700',
+    pathColor: '#f59e0b',
     textColor: '#fff',
     shadow: 'shadow-orange-900/40',
   },
@@ -142,33 +142,33 @@ export default function DashboardIsabela() {
 
           {/* Sección de métricas de tiempo y calidad */}
           <div className="flex flex-row flex-wrap gap-8 mb-10 justify-center">
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex flex-col items-center justify-center shadow-lg">
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 flex flex-col items-center justify-center shadow-lg">
               <span className="text-lg font-semibold text-white mb-1">Total Minutos</span>
-              <span className="text-4xl font-bold text-blue-300">{stats.total_minutes ?? '-'}</span>
+              <span className="text-4xl font-bold text-blue-100">{stats.total_minutes ?? '-'}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-fuchsia-900 via-fuchsia-800 to-fuchsia-700 flex flex-col items-center justify-center shadow-lg">
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-cyan-600 via-cyan-500 to-cyan-700 flex flex-col items-center justify-center shadow-lg">
               <span className="text-lg font-semibold text-white mb-1">Promedio duración (seg)</span>
-              <span className="text-4xl font-bold text-fuchsia-200">{promedioDuracion}</span>
+              <span className="text-4xl font-bold text-cyan-100">{promedioDuracion}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-yellow-700 via-yellow-600 to-yellow-800 flex flex-col items-center justify-center shadow-lg">
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-amber-600 via-amber-500 to-amber-700 flex flex-col items-center justify-center shadow-lg">
               <span className="text-lg font-semibold text-white mb-1">Llamadas Rechazadas</span>
-              <span className="text-4xl font-bold text-yellow-200">{rechazadas}</span>
+              <span className="text-4xl font-bold text-amber-100">{rechazadas}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-green-900 via-green-800 to-green-700 flex flex-col items-center justify-center shadow-lg">
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700 flex flex-col items-center justify-center shadow-lg">
               <span className="text-lg font-semibold text-white mb-1">% Éxito</span>
-              <span className="text-4xl font-bold text-green-200">{porcentajeExito}%</span>
+              <span className="text-4xl font-bold text-emerald-100">{porcentajeExito}%</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-red-900 via-red-800 to-red-700 flex flex-col items-center justify-center shadow-lg">
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-red-600 via-red-500 to-red-700 flex flex-col items-center justify-center shadow-lg">
               <span className="text-lg font-semibold text-white mb-1">% Fallo</span>
-              <span className="text-4xl font-bold text-red-200">{porcentajeFallo}%</span>
+              <span className="text-4xl font-bold text-red-100">{porcentajeFallo}%</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-cyan-900 via-cyan-800 to-cyan-700 flex flex-col items-center justify-center shadow-lg">
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-indigo-700 flex flex-col items-center justify-center shadow-lg">
               <span className="text-lg font-semibold text-white mb-1">Duración Máxima (seg)</span>
-              <span className="text-4xl font-bold text-cyan-200">{duracionMax}</span>
+              <span className="text-4xl font-bold text-indigo-100">{duracionMax}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-yellow-900 via-yellow-800 to-yellow-700 flex flex-col items-center justify-center shadow-lg">
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-violet-600 via-violet-500 to-violet-700 flex flex-col items-center justify-center shadow-lg">
               <span className="text-lg font-semibold text-white mb-1">Duración Mínima (seg)</span>
-              <span className="text-4xl font-bold text-yellow-200">{duracionMin}</span>
+              <span className="text-4xl font-bold text-violet-100">{duracionMin}</span>
             </div>
           </div>
 
