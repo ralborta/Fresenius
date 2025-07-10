@@ -7,6 +7,9 @@ import 'react-circular-progressbar/dist/styles.css';
 interface Conversation {
   call_duration_secs?: number;
   call_successful?: string;
+  created_at?: string;
+  conversation_id?: string;
+  summary?: string;
   // otros campos si los necesitas
 }
 
@@ -100,6 +103,11 @@ export default function DashboardIsabela() {
     duracionMin = Math.min(...duraciones);
   }
 
+  // Calcular llamadas rechazadas
+  const rechazadas = stats && Array.isArray(stats.conversations)
+    ? stats.conversations.filter((c: Conversation) => c.call_successful === 'rejected').length
+    : 0;
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-transparent p-0">
       <h1 className="text-4xl font-bold mb-8 mt-4 drop-shadow text-white">Dashboard Fresenius</h1>
@@ -142,9 +150,9 @@ export default function DashboardIsabela() {
               <span className="text-lg font-semibold text-white mb-1">Promedio duración (seg)</span>
               <span className="text-4xl font-bold text-fuchsia-200">{promedioDuracion}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-gray-700 via-gray-600 to-gray-800 flex flex-col items-center justify-center shadow-lg">
-              <span className="text-lg font-semibold text-white mb-1">Llamadas Desconocidas</span>
-              <span className="text-4xl font-bold text-gray-200">{stats.desconocidas ?? '-'}</span>
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-yellow-700 via-yellow-600 to-yellow-800 flex flex-col items-center justify-center shadow-lg">
+              <span className="text-lg font-semibold text-white mb-1">Llamadas Rechazadas</span>
+              <span className="text-4xl font-bold text-yellow-200">{rechazadas}</span>
             </div>
             <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-green-900 via-green-800 to-green-700 flex flex-col items-center justify-center shadow-lg">
               <span className="text-lg font-semibold text-white mb-1">% Éxito</span>
@@ -163,6 +171,37 @@ export default function DashboardIsabela() {
               <span className="text-4xl font-bold text-yellow-200">{duracionMin}</span>
             </div>
           </div>
+
+          {/* Listado de llamadas */}
+          {Array.isArray(stats.conversations) && stats.conversations.length > 0 && (
+            <div className="w-full max-w-6xl bg-[#18122B] rounded-2xl shadow-lg p-6 mb-10">
+              <h2 className="text-2xl font-bold text-white mb-4">Listado de Llamadas</h2>
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-sm text-left text-white">
+                  <thead>
+                    <tr className="bg-[#232046]">
+                      <th className="px-4 py-2">Fecha/Hora</th>
+                      <th className="px-4 py-2">Duración (seg)</th>
+                      <th className="px-4 py-2">Estado</th>
+                      <th className="px-4 py-2">ID Conversación</th>
+                      <th className="px-4 py-2">Resumen</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stats.conversations.map((c: Conversation, idx: number) => (
+                      <tr key={c.conversation_id || idx} className="border-b border-[#232046] hover:bg-[#232046]/60">
+                        <td className="px-4 py-2">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
+                        <td className="px-4 py-2">{c.call_duration_secs ?? '-'}</td>
+                        <td className="px-4 py-2">{c.call_successful ?? '-'}</td>
+                        <td className="px-4 py-2 font-mono text-xs">{c.conversation_id ?? '-'}</td>
+                        <td className="px-4 py-2 max-w-xs truncate">{c.summary ?? '-'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
