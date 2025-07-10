@@ -41,8 +41,8 @@ export default function RootLayout({
                 <Link href="/" className="flex items-center gap-3 px-4 py-3 rounded-lg text-white font-medium bg-gradient-to-r from-fuchsia-700/80 to-fuchsia-500/60 shadow-md">
                   <span className="text-lg">🎛️</span> Dashboard
                 </Link>
-                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-[#232046] font-medium">
-                  <span className="text-lg">🖥️</span> Backend
+                <Link href="/llamadas" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-[#232046] font-medium">
+                  <span className="text-lg">📞</span> Llamadas
                 </Link>
                 <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-[#232046] font-medium">
                   <span className="text-lg">📊</span> Stats
