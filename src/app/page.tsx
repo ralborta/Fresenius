@@ -14,7 +14,8 @@ interface Estadisticas {
   unanswered_calls?: number;
   busy_calls?: number;
   failed_calls?: number;
-  [key: string]: number | undefined;
+  conversations?: any[]; // Added for new metrics
+  [key: string]: number | undefined | any;
 }
 
 const INDICADORES = [
@@ -56,13 +57,11 @@ export default function DashboardIsabela() {
   const [stats, setStats] = useState<Estadisticas | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [contador, setContador] = useState(0);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
       .then((res) => res.json())
       .then((data) => {
-        console.log('Respuesta de la API /api/estadisticas-isabela:', data); // Log temporal
         setStats(data);
         setLoading(false);
       })
@@ -72,44 +71,93 @@ export default function DashboardIsabela() {
       });
   }, []);
 
+  // Calcular promedio de duración de llamada
+  const promedioDuracion = stats && stats.total_calls && stats.total_calls > 0
+    ? Math.round(((stats.total_minutes ?? 0) * 60) / stats.total_calls)
+    : 0;
+
+  // Porcentajes
+  const porcentajeExito = stats && stats.total_calls && stats.total_calls > 0
+    ? Math.round(((stats.exitosas ?? 0) / stats.total_calls) * 100)
+    : 0;
+  const porcentajeFallo = stats && stats.total_calls && stats.total_calls > 0
+    ? Math.round(((stats.fallidas ?? 0) / stats.total_calls) * 100)
+    : 0;
+
+  // Duración máxima y mínima
+  // Suponiendo que stats.conversations es un array de llamadas
+  let duracionMax = 0;
+  let duracionMin = 0;
+  if (stats && Array.isArray(stats.conversations) && stats.conversations.length > 0) {
+    const duraciones = stats.conversations.map((c: any) => c.call_duration_secs || 0);
+    duracionMax = Math.max(...duraciones);
+    duracionMin = Math.min(...duraciones);
+  }
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-8">
-      <div className="mb-4 flex flex-col items-center">
-        <span className="text-lg font-semibold">Contador de prueba: {contador}</span>
-        <button
-          className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={() => setContador(contador + 1)}
-        >
-          Incrementar
-        </button>
-      </div>
-      <h1 className="text-3xl font-bold mb-6">Dashboard de Isabela</h1>
+    <div className="min-h-screen flex flex-col items-center justify-start bg-transparent p-0">
+      <h1 className="text-4xl font-bold mb-8 mt-4 drop-shadow text-white">Dashboard Fresenius</h1>
       {loading && <p>Cargando estadísticas...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {stats && (
-        <div className="flex flex-row gap-8 mb-10">
-          {INDICADORES.map((ind) => (
-            <div
-              key={ind.key}
-              className={`w-64 h-64 rounded-2xl bg-gradient-to-br ${ind.color} flex flex-col items-center justify-center shadow-xl ${ind.shadow}`}
-            >
-              <span className="text-xl font-semibold text-white mb-2 drop-shadow">{ind.label}</span>
-              <div className="w-36 h-36 mb-2">
-                <CircularProgressbar
-                  value={stats[ind.key] as number ?? 0}
-                  maxValue={ind.key === 'total_minutes' ? 500 : stats.total_calls ?? 100}
-                  text={`${stats[ind.key] ?? '-'}`}
-                  styles={buildStyles({
-                    pathColor: ind.pathColor,
-                    textColor: ind.textColor,
-                    trailColor: 'rgba(255,255,255,0.08)',
-                    textSize: '2.5rem',
-                  })}
-                />
+        <>
+          {/* Indicadores principales arriba */}
+          <div className="flex flex-row gap-8 mb-12 mt-2">
+            {INDICADORES.map((ind) => (
+              <div
+                key={ind.key}
+                className={`w-64 h-64 rounded-2xl bg-gradient-to-br ${ind.color} flex flex-col items-center justify-center shadow-xl ${ind.shadow}`}
+              >
+                <span className="text-xl font-semibold text-white mb-2 drop-shadow">{ind.label}</span>
+                <div className="w-36 h-36 mb-2">
+                  <CircularProgressbar
+                    value={stats[ind.key] as number ?? 0}
+                    maxValue={ind.key === 'total_minutes' ? 500 : stats.total_calls ?? 100}
+                    text={`${stats[ind.key] ?? '-'}`}
+                    styles={buildStyles({
+                      pathColor: ind.pathColor,
+                      textColor: ind.textColor,
+                      trailColor: 'rgba(255,255,255,0.08)',
+                      textSize: '2.5rem',
+                    })}
+                  />
+                </div>
               </div>
+            ))}
+          </div>
+
+          {/* Sección de métricas de tiempo y calidad */}
+          <div className="flex flex-row flex-wrap gap-8 mb-10 justify-center">
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex flex-col items-center justify-center shadow-lg">
+              <span className="text-lg font-semibold text-white mb-1">Total Minutos</span>
+              <span className="text-4xl font-bold text-blue-300">{stats.total_minutes ?? '-'}</span>
             </div>
-          ))}
-        </div>
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-fuchsia-900 via-fuchsia-800 to-fuchsia-700 flex flex-col items-center justify-center shadow-lg">
+              <span className="text-lg font-semibold text-white mb-1">Promedio duración (seg)</span>
+              <span className="text-4xl font-bold text-fuchsia-200">{promedioDuracion}</span>
+            </div>
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-gray-700 via-gray-600 to-gray-800 flex flex-col items-center justify-center shadow-lg">
+              <span className="text-lg font-semibold text-white mb-1">Llamadas Desconocidas</span>
+              <span className="text-4xl font-bold text-gray-200">{stats.desconocidas ?? '-'}</span>
+            </div>
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-green-900 via-green-800 to-green-700 flex flex-col items-center justify-center shadow-lg">
+              <span className="text-lg font-semibold text-white mb-1">% Éxito</span>
+              <span className="text-4xl font-bold text-green-200">{porcentajeExito}%</span>
+            </div>
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-red-900 via-red-800 to-red-700 flex flex-col items-center justify-center shadow-lg">
+              <span className="text-lg font-semibold text-white mb-1">% Fallo</span>
+              <span className="text-4xl font-bold text-red-200">{porcentajeFallo}%</span>
+            </div>
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-cyan-900 via-cyan-800 to-cyan-700 flex flex-col items-center justify-center shadow-lg">
+              <span className="text-lg font-semibold text-white mb-1">Duración Máxima (seg)</span>
+              <span className="text-4xl font-bold text-cyan-200">{duracionMax}</span>
+            </div>
+            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-yellow-900 via-yellow-800 to-yellow-700 flex flex-col items-center justify-center shadow-lg">
+              <span className="text-lg font-semibold text-white mb-1">Duración Mínima (seg)</span>
+              <span className="text-4xl font-bold text-yellow-200">{duracionMin}</span>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
