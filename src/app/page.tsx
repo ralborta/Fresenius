@@ -6,7 +6,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 export default function DashboardIsabela() {
   // Estado para los datos del backend
-  const [apiData, setApiData] = useState<Record<string, any> | null>(null);
+  const [apiData, setApiData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
