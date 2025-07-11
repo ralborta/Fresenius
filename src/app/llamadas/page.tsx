@@ -46,21 +46,17 @@ export default function LlamadasPage() {
             <table className="min-w-full text-sm text-left">
               <thead>
                 <tr className="bg-blue-50 text-blue-900">
-                  <th className="px-4 py-2 font-semibold">Fecha/Hora</th>
-                  <th className="px-4 py-2 font-semibold">Duración (seg)</th>
-                  <th className="px-4 py-2 font-semibold">Estado</th>
-                  <th className="px-4 py-2 font-semibold">ID Conversación</th>
-                  <th className="px-4 py-2 font-semibold">Resumen</th>
+                  {Object.keys(conversations[0] || {}).map((key) => (
+                    <th key={key} className="px-4 py-2 font-semibold">{key}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {paginatedConversations.map((c, idx) => (
                   <tr key={c.conversation_id || idx} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
-                    <td className="px-4 py-2 text-gray-700">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
-                    <td className="px-4 py-2 text-blue-700 font-semibold">{c.call_duration_secs ?? '-'}</td>
-                    <td className="px-4 py-2">{c.call_successful ?? '-'}</td>
-                    <td className="px-4 py-2 font-mono text-xs text-gray-500">{c.conversation_id ?? '-'}</td>
-                    <td className="px-4 py-2 max-w-xs truncate text-gray-600">{c.summary ?? '-'}</td>
+                    {Object.keys(conversations[0] || {}).map((key) => (
+                      <td key={key} className="px-4 py-2 text-gray-700">{String(c[key] ?? '-')}</td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
