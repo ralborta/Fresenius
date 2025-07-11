@@ -10,10 +10,13 @@ interface Conversation {
   summary?: string;
 }
 
+const PAGE_SIZE = 10;
+
 export default function LlamadasPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
@@ -27,6 +30,10 @@ export default function LlamadasPage() {
         setLoading(false);
       });
   }, []);
+
+  // Paginación
+  const totalPages = Math.ceil(conversations.length / PAGE_SIZE);
+  const paginatedConversations = conversations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-white p-0">
@@ -47,7 +54,7 @@ export default function LlamadasPage() {
                 </tr>
               </thead>
               <tbody>
-                {conversations.map((c, idx) => (
+                {paginatedConversations.map((c, idx) => (
                   <tr key={c.conversation_id || idx} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
                     <td className="px-4 py-2 text-gray-700">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
                     <td className="px-4 py-2 text-blue-700 font-semibold">{c.call_duration_secs ?? '-'}</td>
@@ -59,6 +66,28 @@ export default function LlamadasPage() {
               </tbody>
             </table>
           </div>
+          {/* Paginación */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-6">
+              <button
+                className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold disabled:opacity-50"
+                onClick={() => setPage(page - 1)}
+                disabled={page === 1}
+              >Anterior</button>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i}
+                  className={`px-3 py-1 rounded font-semibold ${page === i + 1 ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-700 hover:bg-blue-200'}`}
+                  onClick={() => setPage(i + 1)}
+                >{i + 1}</button>
+              ))}
+              <button
+                className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold disabled:opacity-50"
+                onClick={() => setPage(page + 1)}
+                disabled={page === totalPages}
+              >Siguiente</button>
+            </div>
+          )}
         </div>
       ) : (
         !loading && <p className="text-gray-400">No hay llamadas registradas.</p>
