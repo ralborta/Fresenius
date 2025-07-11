@@ -65,7 +65,7 @@ export default function RootLayout({
             </div>
           </aside>
           {/* Contenido principal */}
-          <main className="flex-1 p-10 bg-transparent">{children}</main>
+          <main className="flex-1 p-6 bg-white">{children}</main>
         </div>
       </body>
     </html>
