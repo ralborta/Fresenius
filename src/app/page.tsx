@@ -103,8 +103,8 @@ export default function DashboardIsabela() {
                     <span>100</span>
                   </div>
                 </div>
-                <div className="text-xs text-gray-400">Waiting: {waiting}</div>
-                <div className="text-2xl font-bold text-green-600">Active: {active}</div>
+                <div className="text-xs text-gray-400">Waiting: {String(waiting)}</div>
+                <div className="text-2xl font-bold text-green-600">Active: {String(active)}</div>
               </div>
             </div>
           </div>
