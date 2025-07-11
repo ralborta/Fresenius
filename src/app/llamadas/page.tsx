@@ -46,19 +46,38 @@ export default function LlamadasPage() {
             <table className="min-w-full text-sm text-left">
               <thead>
                 <tr className="bg-blue-50 text-blue-900">
-                  {(Object.keys(conversations[0] || {}) as (keyof Conversation)[]).map((key) => (
-                    <th key={key} className="px-4 py-2 font-semibold">{key}</th>
-                  ))}
+                  <th className="px-4 py-2 font-semibold">ID</th>
+                  <th className="px-4 py-2 font-semibold">Agente</th>
+                  <th className="px-4 py-2 font-semibold">Estatus</th>
+                  <th className="px-4 py-2 font-semibold">Fecha y hora</th>
+                  <th className="px-4 py-2 font-semibold">Resultado</th>
+                  <th className="px-4 py-2 font-semibold">Duración</th>
                 </tr>
               </thead>
               <tbody>
-                {paginatedConversations.map((c, idx) => (
-                  <tr key={c.conversation_id || idx} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
-                    {(Object.keys(conversations[0] || {}) as (keyof Conversation)[]).map((key) => (
-                      <td key={key} className="px-4 py-2 text-gray-700">{String(c[key] ?? '-')}</td>
-                    ))}
-                  </tr>
-                ))}
+                {paginatedConversations.map((c, idx) => {
+                  // ID correlativo global
+                  const globalIdx = (page - 1) * PAGE_SIZE + idx + 1;
+                  const correlativo = `Nt-${globalIdx.toString().padStart(3, '0')}`;
+                  // Fecha legible
+                  const fecha = c.start_time_unix_secs ? new Date(Number(c.start_time_unix_secs) * 1000) : null;
+                  const fechaStr = fecha ? fecha.toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' }) : '-';
+                  // Duración en mm:ss
+                  const dur = c.call_duration_secs || 0;
+                  const min = Math.floor(dur / 60);
+                  const seg = dur % 60;
+                  const duracionStr = `${min}:${seg.toString().padStart(2, '0')}`;
+                  return (
+                    <tr key={c.conversation_id || idx} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
+                      <td className="px-4 py-2 text-gray-700 font-mono">{correlativo}</td>
+                      <td className="px-4 py-2 text-gray-700">{c.agent_name || '-'}</td>
+                      <td className="px-4 py-2 text-gray-700">{c.status || '-'}</td>
+                      <td className="px-4 py-2 text-gray-700">{fechaStr}</td>
+                      <td className="px-4 py-2 text-gray-700">{c.call_successful || '-'}</td>
+                      <td className="px-4 py-2 text-gray-700">{duracionStr}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
