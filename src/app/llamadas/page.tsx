@@ -88,7 +88,7 @@ export default function LlamadasPage() {
                           // Intenta encontrar el campo de resumen más probable
                           const resumen = data.summary || data.call_summary || data.overview || data.description || null;
                           setSelectedSummary(resumen && resumen.trim() ? resumen : null);
-                        } catch (e) {
+                        } catch {
                           setSelectedSummary(null);
                         }
                         setLoadingSummary(false);
