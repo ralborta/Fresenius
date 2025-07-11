@@ -23,17 +23,20 @@ export default function DashboardIsabela() {
       });
   }, []);
 
-  // Mapear los datos del API a las tarjetas (ajusta los campos según tu JSON real)
-  const metricas = apiData ? [
-    { label: 'Longest Call Waiting', value: apiData.longestCallWaiting ?? '-', icon: <FaClock className="text-sky-500 text-2xl" /> },
-    { label: 'Current Call Waiting', value: apiData.currentCallWaiting ?? '-', icon: <FaPhone className="text-sky-500 text-2xl" /> },
-    { label: 'Average Talk Time', value: apiData.averageTalkTime ?? '-', icon: <FaCalendarAlt className="text-sky-500 text-2xl" /> },
-    { label: 'Total Calls Today', value: apiData.totalCallsToday ?? '-', icon: <FaChartLine className="text-sky-500 text-2xl" /> },
-    { label: 'Agent Ready', value: apiData.agentReady ?? '-', icon: <FaUserCheck className="text-sky-500 text-2xl" /> },
-    { label: 'Agent Logged In', value: apiData.agentLoggedIn ?? '-', icon: <FaUserFriends className="text-sky-500 text-2xl" /> },
-    { label: 'ASA', value: apiData.asa ?? '-', icon: <FaChartLine className="text-sky-500 text-2xl" /> },
-    { label: 'Abandoned Today', value: apiData.abandonedToday ?? '-', icon: <FaUserTimes className="text-sky-500 text-2xl" /> },
-  ] : [];
+  // Métricas relevantes del API
+  const metricasDashboard = [
+    { key: 'totalCalls', label: 'Total Calls' },
+    { key: 'totalMinutes', label: 'Total Minutes' },
+    { key: 'successful', label: 'Successful' },
+    { key: 'failed', label: 'Failed' },
+    { key: 'totalMinutos', label: 'Total Minutos' },
+    { key: 'promedioDuracion', label: 'Promedio duración (seg)' },
+    { key: 'llamadasRechazadas', label: 'Llamadas Rechazadas' },
+    { key: 'porcentajeExito', label: '% Éxito' },
+    { key: 'porcentajeFallo', label: '% Fallo' },
+    { key: 'duracionMaxima', label: 'Duración Máxima (seg)' },
+    { key: 'duracionMinima', label: 'Duración Mínima (seg)' },
+  ];
 
   // Datos para la gráfica Call Monitor (ajusta el campo según tu JSON real)
   const callMonitorData = Array.isArray(apiData?.callMonitorData)
@@ -54,12 +57,11 @@ export default function DashboardIsabela() {
       {!loading && !error && (
         <>
           {/* Tarjetas de métricas */}
-          <div className="grid grid-cols-4 gap-6 w-full max-w-6xl mb-8">
-            {metricas.map((m, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl mb-8">
+            {metricasDashboard.map((m, i) => (
               <div key={i} className="flex flex-col items-center justify-center bg-white rounded-xl shadow border border-blue-100 p-4 min-h-[110px]">
-                <div className="mb-2">{m.icon}</div>
-                <div className="text-2xl font-bold text-sky-700">{String(m.value)}</div>
-                <div className="text-sm text-gray-500 font-medium text-center">{m.label}</div>
+                <div className="text-sm text-gray-500 font-medium text-center mb-1">{m.label}</div>
+                <div className="text-2xl font-bold text-sky-700">{String(apiData && apiData[m.key] !== undefined ? apiData[m.key] : 'N/A')}</div>
               </div>
             ))}
           </div>
