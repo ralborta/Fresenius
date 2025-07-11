@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { FaExclamationTriangle } from 'react-icons/fa';
+import { FaExclamationTriangle, FaPhone, FaClock, FaCheckCircle, FaTimesCircle, FaStopwatch, FaBan, FaArrowUp, FaArrowDown, FaTachometerAlt, FaRegClock } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function DashboardIsabela() {
@@ -23,19 +23,19 @@ export default function DashboardIsabela() {
       });
   }, []);
 
-  // Métricas relevantes del API
+  // Métricas relevantes del API con iconos
   const metricasDashboard = [
-    { key: 'totalCalls', label: 'Total Calls' },
-    { key: 'totalMinutes', label: 'Total Minutes' },
-    { key: 'successful', label: 'Successful' },
-    { key: 'failed', label: 'Failed' },
-    { key: 'totalMinutos', label: 'Total Minutos' },
-    { key: 'promedioDuracion', label: 'Promedio duración (seg)' },
-    { key: 'llamadasRechazadas', label: 'Llamadas Rechazadas' },
-    { key: 'porcentajeExito', label: '% Éxito' },
-    { key: 'porcentajeFallo', label: '% Fallo' },
-    { key: 'duracionMaxima', label: 'Duración Máxima (seg)' },
-    { key: 'duracionMinima', label: 'Duración Mínima (seg)' },
+    { key: 'totalCalls', label: 'Total Calls', icon: <FaPhone className="text-sky-500 text-2xl" /> },
+    { key: 'totalMinutes', label: 'Total Minutes', icon: <FaClock className="text-sky-500 text-2xl" /> },
+    { key: 'successful', label: 'Successful', icon: <FaCheckCircle className="text-green-500 text-2xl" /> },
+    { key: 'failed', label: 'Failed', icon: <FaTimesCircle className="text-red-500 text-2xl" /> },
+    { key: 'totalMinutos', label: 'Total Minutos', icon: <FaRegClock className="text-sky-500 text-2xl" /> },
+    { key: 'promedioDuracion', label: 'Promedio duración (seg)', icon: <FaStopwatch className="text-cyan-500 text-2xl" /> },
+    { key: 'llamadasRechazadas', label: 'Llamadas Rechazadas', icon: <FaBan className="text-amber-500 text-2xl" /> },
+    { key: 'porcentajeExito', label: '% Éxito', icon: <FaArrowUp className="text-green-500 text-2xl" /> },
+    { key: 'porcentajeFallo', label: '% Fallo', icon: <FaArrowDown className="text-red-500 text-2xl" /> },
+    { key: 'duracionMaxima', label: 'Duración Máxima (seg)', icon: <FaTachometerAlt className="text-indigo-500 text-2xl" /> },
+    { key: 'duracionMinima', label: 'Duración Mínima (seg)', icon: <FaTachometerAlt className="text-violet-500 text-2xl" /> },
   ];
 
   // Datos para la gráfica Call Monitor (ajusta el campo según tu JSON real)
@@ -60,6 +60,7 @@ export default function DashboardIsabela() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl mb-8">
             {metricasDashboard.map((m, i) => (
               <div key={i} className="flex flex-col items-center justify-center bg-white rounded-xl shadow border border-blue-100 p-4 min-h-[110px]">
+                <div className="mb-2">{m.icon}</div>
                 <div className="text-sm text-gray-500 font-medium text-center mb-1">{m.label}</div>
                 <div className="text-2xl font-bold text-sky-700">{String(apiData && apiData[m.key] !== undefined ? apiData[m.key] : 'N/A')}</div>
               </div>
