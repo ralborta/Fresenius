@@ -20,6 +20,8 @@ export async function GET(request: Request, context: any) {
     }
 
     const data = await res.json();
+    // Log para depuración
+    console.log('Detalle de la conversación:', JSON.stringify(data, null, 2));
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error: 'Error interno del servidor', details: error }, { status: 500 });
