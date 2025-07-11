@@ -1,95 +1,12 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 import { FaClock, FaPhone, FaCalendarAlt, FaUserCheck, FaUserFriends, FaChartLine, FaUserTimes, FaExclamationTriangle } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-interface Conversation {
-  call_duration_secs?: number;
-  call_successful?: string;
-  created_at?: string;
-  conversation_id?: string;
-  summary?: string;
-  // otros campos si los necesitas
-}
-
-interface Estadisticas {
-  total_calls?: number;
-  total_minutes?: number;
-  exitosas?: number;
-  fallidas?: number;
-  desconocidas?: number;
-  rejected_calls?: number;
-  unanswered_calls?: number;
-  busy_calls?: number;
-  failed_calls?: number;
-  conversations?: Conversation[];
-  [key: string]: number | Conversation[] | undefined;
-}
-
-const INDICADORES = [
-  {
-    key: 'total_calls',
-    label: 'Total Calls',
-    color: 'from-blue-500 via-blue-400 to-blue-700',
-    pathColor: '#3b82f6',
-    textColor: '#fff',
-    shadow: 'shadow-blue-900/40',
-  },
-  {
-    key: 'total_minutes',
-    label: 'Total Minutes',
-    color: 'from-cyan-500 via-cyan-400 to-cyan-700',
-    pathColor: '#06b6d4',
-    textColor: '#fff',
-    shadow: 'shadow-cyan-900/40',
-  },
-  {
-    key: 'exitosas',
-    label: 'Successful',
-    color: 'from-emerald-500 via-emerald-400 to-emerald-700',
-    pathColor: '#10b981',
-    textColor: '#fff',
-    shadow: 'shadow-emerald-900/40',
-  },
-  {
-    key: 'fallidas',
-    label: 'Failed',
-    color: 'from-orange-500 via-orange-400 to-orange-700',
-    pathColor: '#f59e0b',
-    textColor: '#fff',
-    shadow: 'shadow-orange-900/40',
-  },
-];
-
-// Datos simulados para las tarjetas
-const metricas = [
-  { label: 'Longest Call Waiting', value: '01:10', icon: <FaClock className="text-sky-500 text-2xl" /> },
-  { label: 'Current Call Waiting', value: 11, icon: <FaPhone className="text-sky-500 text-2xl" /> },
-  { label: 'Average Talk Time', value: '5:22', icon: <FaCalendarAlt className="text-sky-500 text-2xl" /> },
-  { label: 'Total Calls Today', value: 2321, icon: <FaChartLine className="text-sky-500 text-2xl" /> },
-  { label: 'Agent Ready', value: 4, icon: <FaUserCheck className="text-sky-500 text-2xl" /> },
-  { label: 'Agent Logged In', value: 34, icon: <FaUserFriends className="text-sky-500 text-2xl" /> },
-  { label: 'ASA', value: 43, icon: <FaChartLine className="text-sky-500 text-2xl" /> },
-  { label: 'Abandoned Today', value: 6, icon: <FaUserTimes className="text-sky-500 text-2xl" /> },
-];
-
-// Datos simulados para la gráfica de líneas
-const callMonitorData = [
-  { name: '10:00', active: 70, onHold: 20 },
-  { name: '10:10', active: 76, onHold: 22 },
-  { name: '10:20', active: 72, onHold: 19 },
-  { name: '10:30', active: 80, onHold: 25 },
-  { name: '10:40', active: 74, onHold: 21 },
-  { name: '10:50', active: 78, onHold: 23 },
-  { name: '11:00', active: 75, onHold: 20 },
-];
-
 export default function DashboardIsabela() {
   // Estado para los datos del backend
-  const [apiData, setApiData] = useState<any>(null);
+  const [apiData, setApiData] = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
