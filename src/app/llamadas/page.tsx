@@ -23,6 +23,7 @@ export default function LlamadasPage() {
   const [page, setPage] = useState(1);
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [selectedCall, setSelectedCall] = useState<Conversation | null>(null);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
@@ -78,7 +79,7 @@ export default function LlamadasPage() {
                       key={c.conversation_id || idx}
                       className={idx % 2 === 0 ? "bg-white cursor-pointer" : "bg-blue-50/60 cursor-pointer"}
                       onClick={() => {
-                        console.log('Resumen de la llamada:', c.summary);
+                        setSelectedCall(c);
                         setSelectedSummary(c.summary && c.summary.trim() ? c.summary : null);
                         setShowModal(true);
                       }}
@@ -133,9 +134,16 @@ export default function LlamadasPage() {
               ×
             </button>
             <h2 className="text-2xl font-bold mb-4 text-blue-900 w-full text-left">Resumen de la llamada</h2>
-            <div className="text-gray-700 whitespace-pre-line w-full min-h-[60px] text-lg">
+            <div className="text-gray-700 whitespace-pre-line w-full min-h-[60px] text-lg mb-4">
               {selectedSummary ? selectedSummary : <span className="italic text-gray-400">Sin resumen disponible</span>}
             </div>
+            {/* DEPURACIÓN: Mostrar todos los campos de la llamada seleccionada */}
+            {selectedCall && (
+              <div className="w-full bg-blue-50 rounded p-3 text-xs text-gray-700 overflow-x-auto mb-4">
+                <div className="font-bold mb-1">Datos completos de la llamada:</div>
+                <pre className="whitespace-pre-wrap break-all">{JSON.stringify(selectedCall, null, 2)}</pre>
+              </div>
+            )}
             <div className="mt-8 flex justify-end w-full">
               <button
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
