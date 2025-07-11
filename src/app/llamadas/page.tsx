@@ -21,6 +21,8 @@ export default function LlamadasPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
@@ -72,7 +74,14 @@ export default function LlamadasPage() {
                   const seg = dur % 60;
                   const duracionStr = `${min}:${seg.toString().padStart(2, '0')}`;
                   return (
-                    <tr key={c.conversation_id || idx} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
+                    <tr
+                      key={c.conversation_id || idx}
+                      className={idx % 2 === 0 ? "bg-white cursor-pointer" : "bg-blue-50/60 cursor-pointer"}
+                      onClick={() => {
+                        setSelectedSummary(c.summary || null);
+                        setShowModal(true);
+                      }}
+                    >
                       <td className="px-4 py-2 text-gray-700 font-mono">{correlativo}</td>
                       <td className="px-4 py-2 text-gray-700">{c.agent_name || '-'}</td>
                       <td className="px-4 py-2 text-gray-700">{c.status || '-'}</td>
@@ -110,6 +119,30 @@ export default function LlamadasPage() {
         </div>
       ) : (
         !loading && <p className="text-gray-400">No hay llamadas registradas.</p>
+      )}
+      {/* Modal para mostrar el resumen de la llamada */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative animate-fade-in">
+            <button
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+              onClick={() => setShowModal(false)}
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+            <h2 className="text-xl font-semibold mb-4 text-blue-900">Resumen de la llamada</h2>
+            <div className="text-gray-700 whitespace-pre-line">
+              {selectedSummary ? selectedSummary : <span className="italic text-gray-400">Sin resumen disponible</span>}
+            </div>
+            <div className="mt-6 flex justify-end">
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
+                onClick={() => setShowModal(false)}
+              >Cerrar</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
