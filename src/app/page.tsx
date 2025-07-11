@@ -62,7 +62,7 @@ export default function DashboardIsabela() {
               <div key={i} className="flex flex-col items-center justify-center bg-white rounded-xl shadow border border-blue-100 p-4 min-h-[110px]">
                 <div className="mb-2">{m.icon}</div>
                 <div className="text-sm text-gray-500 font-medium text-center mb-1">{m.label}</div>
-                <div className="text-2xl font-bold text-sky-700">{String(apiData && apiData[m.key] !== undefined ? apiData[m.key] : 'N/A')}</div>
+                <div className="text-2xl font-bold text-sky-700">{apiData && apiData[m.key] !== undefined && apiData[m.key] !== null ? String(apiData[m.key]) : '0'}</div>
               </div>
             ))}
           </div>
