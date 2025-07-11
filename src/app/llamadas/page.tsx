@@ -46,7 +46,7 @@ export default function LlamadasPage() {
             <table className="min-w-full text-sm text-left">
               <thead>
                 <tr className="bg-blue-50 text-blue-900">
-                  {Object.keys(conversations[0] || {}).map((key) => (
+                  {(Object.keys(conversations[0] || {}) as (keyof Conversation)[]).map((key) => (
                     <th key={key} className="px-4 py-2 font-semibold">{key}</th>
                   ))}
                 </tr>
@@ -54,7 +54,7 @@ export default function LlamadasPage() {
               <tbody>
                 {paginatedConversations.map((c, idx) => (
                   <tr key={c.conversation_id || idx} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
-                    {Object.keys(conversations[0] || {}).map((key) => (
+                    {(Object.keys(conversations[0] || {}) as (keyof Conversation)[]).map((key) => (
                       <td key={key} className="px-4 py-2 text-gray-700">{String(c[key] ?? '-')}</td>
                     ))}
                   </tr>
