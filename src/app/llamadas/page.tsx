@@ -29,31 +29,31 @@ export default function LlamadasPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-transparent p-0">
-      <h1 className="text-4xl font-bold text-white mb-8 mt-4 drop-shadow">Listado de Llamadas</h1>
-      {loading && <p>Cargando llamadas...</p>}
+    <div className="min-h-screen flex flex-col items-center justify-start bg-white p-0">
+      <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide mb-8 mt-4" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Listado de Llamadas</h1>
+      {loading && <p className="text-gray-500">Cargando llamadas...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {conversations.length > 0 ? (
-        <div className="w-full max-w-6xl bg-[#18122B] rounded-2xl shadow-lg p-6 mb-10">
+        <div className="w-full max-w-6xl bg-white rounded-2xl shadow-lg p-6 mb-10 border border-blue-100">
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm text-left text-white">
+            <table className="min-w-full text-sm text-left">
               <thead>
-                <tr className="bg-[#232046]">
-                  <th className="px-4 py-2">Fecha/Hora</th>
-                  <th className="px-4 py-2">Duración (seg)</th>
-                  <th className="px-4 py-2">Estado</th>
-                  <th className="px-4 py-2">ID Conversación</th>
-                  <th className="px-4 py-2">Resumen</th>
+                <tr className="bg-blue-50 text-blue-900">
+                  <th className="px-4 py-2 font-semibold">Fecha/Hora</th>
+                  <th className="px-4 py-2 font-semibold">Duración (seg)</th>
+                  <th className="px-4 py-2 font-semibold">Estado</th>
+                  <th className="px-4 py-2 font-semibold">ID Conversación</th>
+                  <th className="px-4 py-2 font-semibold">Resumen</th>
                 </tr>
               </thead>
               <tbody>
                 {conversations.map((c, idx) => (
-                  <tr key={c.conversation_id || idx} className="border-b border-[#232046] hover:bg-[#232046]/60">
-                    <td className="px-4 py-2">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
-                    <td className="px-4 py-2">{c.call_duration_secs ?? '-'}</td>
+                  <tr key={c.conversation_id || idx} className={idx % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
+                    <td className="px-4 py-2 text-gray-700">{c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
+                    <td className="px-4 py-2 text-blue-700 font-semibold">{c.call_duration_secs ?? '-'}</td>
                     <td className="px-4 py-2">{c.call_successful ?? '-'}</td>
-                    <td className="px-4 py-2 font-mono text-xs">{c.conversation_id ?? '-'}</td>
-                    <td className="px-4 py-2 max-w-xs truncate">{c.summary ?? '-'}</td>
+                    <td className="px-4 py-2 font-mono text-xs text-gray-500">{c.conversation_id ?? '-'}</td>
+                    <td className="px-4 py-2 max-w-xs truncate text-gray-600">{c.summary ?? '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -61,7 +61,7 @@ export default function LlamadasPage() {
           </div>
         </div>
       ) : (
-        !loading && <p className="text-gray-300">No hay llamadas registradas.</p>
+        !loading && <p className="text-gray-400">No hay llamadas registradas.</p>
       )}
     </div>
   );
