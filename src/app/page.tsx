@@ -36,9 +36,9 @@ export default function DashboardIsabela() {
   ] : [];
 
   // Datos para la gráfica Call Monitor (ajusta el campo según tu JSON real)
-  const callMonitorData = apiData?.callMonitorData ?? [
-    { name: '10:00', active: 0, onHold: 0 },
-  ];
+  const callMonitorData = Array.isArray(apiData?.callMonitorData)
+    ? apiData.callMonitorData
+    : [{ name: '10:00', active: 0, onHold: 0 }];
 
   // Datos para Service Level y velocímetro (ajusta los campos según tu JSON real)
   const serviceLevel = apiData?.serviceLevel ?? '55/18';
