@@ -24,7 +24,7 @@ export default function LlamadasPage() {
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loadingSummary, setLoadingSummary] = useState(false);
-  const [detalleLlamada, setDetalleLlamada] = useState<any>(null);
+  const [detalleLlamada, setDetalleLlamada] = useState<unknown>(null);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
