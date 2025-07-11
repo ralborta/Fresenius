@@ -23,19 +23,14 @@ export default function DashboardIsabela() {
       });
   }, []);
 
-  // Métricas relevantes del API con iconos
+  // Métricas relevantes del API con iconos y mapeo correcto
   const metricasDashboard = [
-    { key: 'totalCalls', label: 'Total Calls', icon: <FaPhone className="text-sky-500 text-2xl" /> },
-    { key: 'totalMinutes', label: 'Total Minutes', icon: <FaClock className="text-sky-500 text-2xl" /> },
-    { key: 'successful', label: 'Successful', icon: <FaCheckCircle className="text-green-500 text-2xl" /> },
-    { key: 'failed', label: 'Failed', icon: <FaTimesCircle className="text-red-500 text-2xl" /> },
-    { key: 'totalMinutos', label: 'Total Minutos', icon: <FaRegClock className="text-sky-500 text-2xl" /> },
-    { key: 'promedioDuracion', label: 'Promedio duración (seg)', icon: <FaStopwatch className="text-cyan-500 text-2xl" /> },
-    { key: 'llamadasRechazadas', label: 'Llamadas Rechazadas', icon: <FaBan className="text-amber-500 text-2xl" /> },
-    { key: 'porcentajeExito', label: '% Éxito', icon: <FaArrowUp className="text-green-500 text-2xl" /> },
-    { key: 'porcentajeFallo', label: '% Fallo', icon: <FaArrowDown className="text-red-500 text-2xl" /> },
-    { key: 'duracionMaxima', label: 'Duración Máxima (seg)', icon: <FaTachometerAlt className="text-indigo-500 text-2xl" /> },
-    { key: 'duracionMinima', label: 'Duración Mínima (seg)', icon: <FaTachometerAlt className="text-violet-500 text-2xl" /> },
+    { key: 'total_calls', label: 'Total Calls', icon: <FaPhone className="text-sky-500 text-2xl" /> },
+    { key: 'total_minutes', label: 'Total Minutes', icon: <FaClock className="text-sky-500 text-2xl" /> },
+    { key: 'exitosas', label: 'Successful', icon: <FaCheckCircle className="text-green-500 text-2xl" /> },
+    { key: 'fallidas', label: 'Failed', icon: <FaTimesCircle className="text-red-500 text-2xl" /> },
+    { key: 'desconocidas', label: 'Unknown', icon: <FaRegClock className="text-sky-500 text-2xl" /> },
+    // Puedes agregar más métricas aquí si el API las devuelve
   ];
 
   // Datos para la gráfica Call Monitor (ajusta el campo según tu JSON real)
