@@ -46,7 +46,10 @@ export default function DashboardIsabela() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-white p-0">
-      <h1 className="text-4xl font-extrabold mb-8 mt-4 text-blue-900 tracking-wide" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Dashboard Fresenius</h1>
+      <div className="w-full max-w-6xl flex items-center justify-between mt-4 mb-8">
+        <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Dashboard Fresenius</h1>
+        <img src="/ia-solutions-logo.png" alt="IA Solutions Logo" className="h-12 w-auto rounded-lg shadow-sm" />
+      </div>
       {loading && <p className="text-gray-500">Cargando datos...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {!loading && !error && (
