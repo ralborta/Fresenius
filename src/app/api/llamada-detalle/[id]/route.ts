@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  request: Request,
+  context: { params: { id: string } }
+) {
   const API_KEY = process.env.ELEVENLABS_API_KEY || 'YOUR_API_KEY';
-  const conversationId = params.id;
+  const conversationId = context.params.id;
 
   try {
     const res = await fetch(`https://api.elevenlabs.io/v1/convai/conversations/${conversationId}`, {
