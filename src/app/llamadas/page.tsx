@@ -25,6 +25,7 @@ export default function LlamadasPage() {
   const [showModal, setShowModal] = useState(false);
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [detalleLlamada, setDetalleLlamada] = useState<unknown>(null);
+  const [conversationIdUsado, setConversationIdUsado] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
@@ -83,6 +84,7 @@ export default function LlamadasPage() {
                         setShowModal(true);
                         setSelectedSummary(null);
                         setDetalleLlamada(null);
+                        setConversationIdUsado(c.conversation_id || null);
                         setLoadingSummary(true);
                         try {
                           const res = await fetch(`/api/llamada-detalle/${c.conversation_id}`);
@@ -148,6 +150,9 @@ export default function LlamadasPage() {
               ×
             </button>
             <h2 className="text-2xl font-bold mb-4 text-blue-900 w-full text-left">Resumen de la llamada</h2>
+            {conversationIdUsado && (
+              <div className="w-full text-xs text-gray-500 mb-2">ID usado para detalle: <span className="font-mono">{conversationIdUsado}</span></div>
+            )}
             <div className="text-gray-700 whitespace-pre-line w-full min-h-[60px] text-lg mb-4">
               {loadingSummary ? (
                 <span className="italic text-gray-400">Cargando resumen...</span>
