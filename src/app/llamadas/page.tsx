@@ -158,7 +158,7 @@ export default function LlamadasPage() {
               )}
             </div>
             {/* DEPURACIÓN: Mostrar el JSON completo de la respuesta */}
-            {detalleLlamada && (
+            {typeof detalleLlamada === 'object' && detalleLlamada !== null && (
               <div className="w-full bg-blue-50 rounded p-3 text-xs text-gray-700 overflow-x-auto mb-4">
                 <div className="font-bold mb-1">Respuesta completa del detalle:</div>
                 <pre className="whitespace-pre-wrap break-all">{JSON.stringify(detalleLlamada, null, 2)}</pre>
