@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { FaExclamationTriangle, FaPhone, FaClock, FaCheckCircle, FaTimesCircle, FaStopwatch, FaBan, FaArrowUp, FaArrowDown, FaTachometerAlt, FaRegClock } from 'react-icons/fa';
+import { FaExclamationTriangle, FaPhone, FaClock, FaCheckCircle, FaTimesCircle, FaRegClock } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function DashboardIsabela() {
