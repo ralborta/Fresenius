@@ -3,10 +3,14 @@
 import { useEffect, useState } from "react";
 
 interface Conversation {
-  call_duration_secs?: number;
-  call_successful?: string;
-  created_at?: string;
+  agent_id?: string;
+  agent_name?: string;
   conversation_id?: string;
+  start_time_unix_secs?: number;
+  call_duration_secs?: number;
+  message_count?: number;
+  status?: string;
+  call_successful?: string;
   summary?: string;
 }
 
