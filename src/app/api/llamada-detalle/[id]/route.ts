@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const conversationId = params.id;
+export async function GET(request: Request, context: any) {
+  const conversationId = context.params.id;
 
   const API_KEY = process.env.ELEVENLABS_API_KEY || 'YOUR_API_KEY';
 
