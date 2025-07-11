@@ -38,3 +38,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.text-3d {
+  text-shadow:
+    2px 2px 0 #1e293b, /* azul oscuro */
+    4px 4px 0 #64748b, /* azul grisáceo */
+    1px 1px 8px #0f172a; /* sombra difusa */
+}

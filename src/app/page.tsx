@@ -51,7 +51,7 @@ export default function DashboardIsabela() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-white p-0">
-      <h1 className="text-4xl font-bold mb-8 mt-4 text-gray-800 drop-shadow">Dashboard Fresenius</h1>
+      <h1 className="text-4xl font-bold mb-8 mt-4 text-blue-900 text-3d">Dashboard Fresenius</h1>
       {loading && <p className="text-gray-500">Cargando datos...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {!loading && !error && (
