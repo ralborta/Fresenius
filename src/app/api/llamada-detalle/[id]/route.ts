@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request, context) {
-  const conversationId = context.params.id;
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const conversationId = params.id;
 
   const API_KEY = process.env.ELEVENLABS_API_KEY || 'YOUR_API_KEY';
 
