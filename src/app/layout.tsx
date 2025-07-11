@@ -31,36 +31,36 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-slate-800`}
       >
         <div className="flex min-h-screen">
-          {/* Sidebar celeste oscuro */}
-          <aside className="w-64 bg-[#2563eb] border-r border-[#1e40af] flex flex-col justify-between py-8 px-4 shadow-lg">
+          {/* Sidebar celeste suave */}
+          <aside className="w-64 bg-[#e0f2fe] border-r border-[#bae6fd] flex flex-col justify-between py-8 px-4 shadow-lg">
             <div>
               <div className="flex items-center gap-2 mb-10">
-                <span className="text-2xl font-bold text-white">Plataforma</span>
-                <span className="text-2xl font-bold text-blue-200">VoiceCall</span>
+                <span className="text-2xl font-bold text-sky-700">Plataforma</span>
+                <span className="text-2xl font-bold text-sky-400">VoiceCall</span>
               </div>
               <nav className="flex flex-col gap-2">
-                <Link href="/" className="flex items-center gap-3 px-4 py-3 rounded-lg text-white font-medium bg-gradient-to-r from-blue-700/90 to-blue-500/80 shadow-md">
+                <Link href="/" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-900 font-medium bg-gradient-to-r from-sky-200/90 to-sky-100/80 shadow-md">
                   <MdDashboard className="text-2xl" /> Dashboard
                 </Link>
-                <Link href="/llamadas" className="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-blue-600 font-medium">
+                <Link href="/llamadas" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
                   <MdCall className="text-2xl" /> Llamadas
                 </Link>
-                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-blue-600 font-medium">
+                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
                   <MdBarChart className="text-2xl" /> Stats
                 </Link>
-                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-blue-600 font-medium">
+                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
                   <MdMonitorHeart className="text-2xl" /> Monitoring
                 </Link>
-                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-blue-600 font-medium">
+                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
                   <MdSettings className="text-2xl" /> Settings
                 </Link>
               </nav>
             </div>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-blue-800 mt-8">
-              <span className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center font-bold text-blue-800 text-xl">R</span>
+            <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-sky-200 mt-8">
+              <span className="w-10 h-10 rounded-full bg-sky-400 flex items-center justify-center font-bold text-sky-900 text-xl">R</span>
               <div>
-                <div className="font-semibold text-white">Raúl</div>
-                <div className="text-xs text-blue-200">Admin</div>
+                <div className="font-semibold text-sky-900">Raúl</div>
+                <div className="text-xs text-sky-700">Admin</div>
               </div>
             </div>
           </aside>

@@ -109,29 +109,29 @@ export default function DashboardIsabela() {
     : 0;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-transparent p-0">
-      <h1 className="text-4xl font-bold mb-8 mt-4 drop-shadow text-white">Dashboard Fresenius</h1>
-      {loading && <p>Cargando estadísticas...</p>}
+    <div className="min-h-screen flex flex-col items-center justify-start bg-white p-0">
+      <h1 className="text-4xl font-bold mb-8 mt-4 text-gray-800 drop-shadow">Dashboard Fresenius</h1>
+      {loading && <p className="text-gray-500">Cargando estadísticas...</p>}
       {error && <p className="text-red-500">{error}</p>}
       {stats && (
         <>
           {/* Indicadores principales arriba */}
-          <div className="flex flex-row gap-8 mb-12 mt-2">
+          <div className="flex flex-row gap-8 mb-12 mt-2 flex-wrap justify-center">
             {INDICADORES.map((ind) => (
               <div
                 key={ind.key}
-                className={`w-64 h-64 rounded-2xl bg-gradient-to-br ${ind.color} flex flex-col items-center justify-center shadow-xl ${ind.shadow}`}
+                className={`w-64 h-64 rounded-2xl bg-white flex flex-col items-center justify-center shadow-md border border-blue-100 hover:shadow-lg transition-shadow duration-200`}
               >
-                <span className="text-xl font-semibold text-white mb-2 drop-shadow">{ind.label}</span>
+                <span className="text-xl font-semibold text-blue-700 mb-2 drop-shadow">{ind.label}</span>
                 <div className="w-36 h-36 mb-2">
                   <CircularProgressbar
                     value={stats[ind.key] as number ?? 0}
                     maxValue={ind.key === 'total_minutes' ? 500 : stats.total_calls ?? 100}
                     text={`${stats[ind.key] ?? '-'}`}
                     styles={buildStyles({
-                      pathColor: ind.pathColor,
-                      textColor: ind.textColor,
-                      trailColor: 'rgba(255,255,255,0.08)',
+                      pathColor: '#38bdf8', // celeste suave
+                      textColor: '#0ea5e9', // celeste
+                      trailColor: '#e0f2fe',
                       textSize: '2.5rem',
                     })}
                   />
@@ -142,33 +142,33 @@ export default function DashboardIsabela() {
 
           {/* Sección de métricas de tiempo y calidad */}
           <div className="flex flex-row flex-wrap gap-8 mb-10 justify-center">
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700 flex flex-col items-center justify-center shadow-lg">
-              <span className="text-lg font-semibold text-white mb-1">Total Minutos</span>
-              <span className="text-4xl font-bold text-blue-100">{stats.total_minutes ?? '-'}</span>
+            <div className="w-64 h-40 rounded-2xl bg-blue-50 flex flex-col items-center justify-center shadow border border-blue-100">
+              <span className="text-lg font-semibold text-blue-700 mb-1">Total Minutos</span>
+              <span className="text-4xl font-bold text-blue-500">{stats.total_minutes ?? '-'}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-cyan-600 via-cyan-500 to-cyan-700 flex flex-col items-center justify-center shadow-lg">
-              <span className="text-lg font-semibold text-white mb-1">Promedio duración (seg)</span>
-              <span className="text-4xl font-bold text-cyan-100">{promedioDuracion}</span>
+            <div className="w-64 h-40 rounded-2xl bg-cyan-50 flex flex-col items-center justify-center shadow border border-cyan-100">
+              <span className="text-lg font-semibold text-cyan-700 mb-1">Promedio duración (seg)</span>
+              <span className="text-4xl font-bold text-cyan-500">{promedioDuracion}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-amber-600 via-amber-500 to-amber-700 flex flex-col items-center justify-center shadow-lg">
-              <span className="text-lg font-semibold text-white mb-1">Llamadas Rechazadas</span>
-              <span className="text-4xl font-bold text-amber-100">{rechazadas}</span>
+            <div className="w-64 h-40 rounded-2xl bg-amber-50 flex flex-col items-center justify-center shadow border border-amber-100">
+              <span className="text-lg font-semibold text-amber-700 mb-1">Llamadas Rechazadas</span>
+              <span className="text-4xl font-bold text-amber-500">{rechazadas}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-500 to-emerald-700 flex flex-col items-center justify-center shadow-lg">
-              <span className="text-lg font-semibold text-white mb-1">% Éxito</span>
-              <span className="text-4xl font-bold text-emerald-100">{porcentajeExito}%</span>
+            <div className="w-64 h-40 rounded-2xl bg-emerald-50 flex flex-col items-center justify-center shadow border border-emerald-100">
+              <span className="text-lg font-semibold text-emerald-700 mb-1">% Éxito</span>
+              <span className="text-4xl font-bold text-emerald-500">{porcentajeExito}%</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-red-600 via-red-500 to-red-700 flex flex-col items-center justify-center shadow-lg">
-              <span className="text-lg font-semibold text-white mb-1">% Fallo</span>
-              <span className="text-4xl font-bold text-red-100">{porcentajeFallo}%</span>
+            <div className="w-64 h-40 rounded-2xl bg-red-50 flex flex-col items-center justify-center shadow border border-red-100">
+              <span className="text-lg font-semibold text-red-700 mb-1">% Fallo</span>
+              <span className="text-4xl font-bold text-red-500">{porcentajeFallo}%</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-indigo-700 flex flex-col items-center justify-center shadow-lg">
-              <span className="text-lg font-semibold text-white mb-1">Duración Máxima (seg)</span>
-              <span className="text-4xl font-bold text-indigo-100">{duracionMax}</span>
+            <div className="w-64 h-40 rounded-2xl bg-indigo-50 flex flex-col items-center justify-center shadow border border-indigo-100">
+              <span className="text-lg font-semibold text-indigo-700 mb-1">Duración Máxima (seg)</span>
+              <span className="text-4xl font-bold text-indigo-500">{duracionMax}</span>
             </div>
-            <div className="w-64 h-40 rounded-2xl bg-gradient-to-br from-violet-600 via-violet-500 to-violet-700 flex flex-col items-center justify-center shadow-lg">
-              <span className="text-lg font-semibold text-white mb-1">Duración Mínima (seg)</span>
-              <span className="text-4xl font-bold text-violet-100">{duracionMin}</span>
+            <div className="w-64 h-40 rounded-2xl bg-violet-50 flex flex-col items-center justify-center shadow border border-violet-100">
+              <span className="text-lg font-semibold text-violet-700 mb-1">Duración Mínima (seg)</span>
+              <span className="text-4xl font-bold text-violet-500">{duracionMin}</span>
             </div>
           </div>
 
