@@ -84,9 +84,9 @@ export default function DashboardIsabela() {
             <div className="flex flex-col gap-6">
               {/* Service Level */}
               <div className="bg-white rounded-xl shadow border border-blue-100 p-4 flex flex-col items-center justify-center">
-                <div className="text-sm text-gray-500 font-medium mb-1">{serviceLevelLabel}</div>
+                <div className="text-sm text-gray-500 font-medium mb-1">{String(serviceLevelLabel)}</div>
                 <FaExclamationTriangle className="text-yellow-400 text-3xl mb-1" />
-                <div className="text-3xl font-bold text-gray-700">{serviceLevel}</div>
+                <div className="text-3xl font-bold text-gray-700">{String(serviceLevel)}</div>
                 <div className="text-xs text-gray-400">% Answered Within SLA</div>
               </div>
               {/* Velocímetro (gauge) */}
