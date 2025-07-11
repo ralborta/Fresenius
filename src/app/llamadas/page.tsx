@@ -78,7 +78,8 @@ export default function LlamadasPage() {
                       key={c.conversation_id || idx}
                       className={idx % 2 === 0 ? "bg-white cursor-pointer" : "bg-blue-50/60 cursor-pointer"}
                       onClick={() => {
-                        setSelectedSummary(c.summary || null);
+                        console.log('Resumen de la llamada:', c.summary);
+                        setSelectedSummary(c.summary && c.summary.trim() ? c.summary : null);
                         setShowModal(true);
                       }}
                     >
@@ -122,22 +123,22 @@ export default function LlamadasPage() {
       )}
       {/* Modal para mostrar el resumen de la llamada */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-200">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative animate-fade-in flex flex-col items-center">
             <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+              className="absolute top-4 right-4 text-gray-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
               onClick={() => setShowModal(false)}
               aria-label="Cerrar"
             >
               ×
             </button>
-            <h2 className="text-xl font-semibold mb-4 text-blue-900">Resumen de la llamada</h2>
-            <div className="text-gray-700 whitespace-pre-line">
+            <h2 className="text-2xl font-bold mb-4 text-blue-900 w-full text-left">Resumen de la llamada</h2>
+            <div className="text-gray-700 whitespace-pre-line w-full min-h-[60px] text-lg">
               {selectedSummary ? selectedSummary : <span className="italic text-gray-400">Sin resumen disponible</span>}
             </div>
-            <div className="mt-6 flex justify-end">
+            <div className="mt-8 flex justify-end w-full">
               <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
+                className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
                 onClick={() => setShowModal(false)}
               >Cerrar</button>
             </div>
