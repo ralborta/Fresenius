@@ -24,6 +24,7 @@ export default function LlamadasPage() {
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loadingSummary, setLoadingSummary] = useState(false);
+  const [detalleLlamada, setDetalleLlamada] = useState<any>(null);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
@@ -81,15 +82,18 @@ export default function LlamadasPage() {
                       onClick={async () => {
                         setShowModal(true);
                         setSelectedSummary(null);
+                        setDetalleLlamada(null);
                         setLoadingSummary(true);
                         try {
                           const res = await fetch(`/api/llamada-detalle/${c.conversation_id}`);
                           const data = await res.json();
+                          setDetalleLlamada(data);
                           // Intenta encontrar el campo de resumen más probable
                           const resumen = data.summary || data.call_summary || data.overview || data.description || null;
                           setSelectedSummary(resumen && resumen.trim() ? resumen : null);
                         } catch {
                           setSelectedSummary(null);
+                          setDetalleLlamada(null);
                         }
                         setLoadingSummary(false);
                       }}
@@ -153,6 +157,13 @@ export default function LlamadasPage() {
                 <span className="italic text-gray-400">Sin resumen disponible</span>
               )}
             </div>
+            {/* DEPURACIÓN: Mostrar el JSON completo de la respuesta */}
+            {detalleLlamada && (
+              <div className="w-full bg-blue-50 rounded p-3 text-xs text-gray-700 overflow-x-auto mb-4">
+                <div className="font-bold mb-1">Respuesta completa del detalle:</div>
+                <pre className="whitespace-pre-wrap break-all">{JSON.stringify(detalleLlamada, null, 2)}</pre>
+              </div>
+            )}
             <div className="mt-8 flex justify-end w-full">
               <button
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
