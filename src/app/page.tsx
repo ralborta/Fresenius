@@ -58,7 +58,7 @@ export default function DashboardIsabela() {
             {metricas.map((m, i) => (
               <div key={i} className="flex flex-col items-center justify-center bg-white rounded-xl shadow border border-blue-100 p-4 min-h-[110px]">
                 <div className="mb-2">{m.icon}</div>
-                <div className="text-2xl font-bold text-sky-700">{m.value}</div>
+                <div className="text-2xl font-bold text-sky-700">{String(m.value)}</div>
                 <div className="text-sm text-gray-500 font-medium text-center">{m.label}</div>
               </div>
             ))}
