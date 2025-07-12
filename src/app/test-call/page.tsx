@@ -24,6 +24,9 @@ export default function TestCall() {
   const AGENT_ID = process.env.NEXT_PUBLIC_AGENT_ID || 'your-agent-id';
   const AGENT_PHONE_NUMBER_ID = process.env.NEXT_PUBLIC_AGENT_PHONE_NUMBER_ID || 'your-phone-number-id';
 
+  // Log para depuración
+  console.log('AGENT_ID:', AGENT_ID, 'PHONE_ID:', AGENT_PHONE_NUMBER_ID);
+
   const handleTestCall = async () => {
     if (!phoneNumber.trim()) {
       setErrorMessage('Por favor ingresa un número de teléfono');
@@ -142,6 +145,10 @@ export default function TestCall() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-white p-6">
       <div className="w-full max-w-2xl">
+        {/* Línea de depuración visual */}
+        <div className="mb-4 p-2 bg-yellow-100 text-yellow-800 rounded font-mono text-sm">
+          DEBUG: {AGENT_ID} - {AGENT_PHONE_NUMBER_ID}
+        </div>
         <div className="text-center mb-8">
           <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide mb-4">
             Test Call
