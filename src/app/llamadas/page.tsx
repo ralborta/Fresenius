@@ -86,7 +86,6 @@ export default function LlamadasPage() {
                           try {
                             const res = await fetch(`/api/llamada-detalle/${c.conversation_id}`);
                             const data = await res.json();
-                            console.log("Detalle de la llamada:", data); // DEPURACIÓN
                             // Buscar el resumen en analysis.transcript_summary
                             const resumen = data.analysis?.transcript_summary || data.summary || data.call_summary || data.overview || data.description || null;
                             if (resumen && resumen.trim()) {
