@@ -24,8 +24,6 @@ export default function LlamadasPage() {
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loadingSummary, setLoadingSummary] = useState(false);
-  const [detalleLlamada, setDetalleLlamada] = useState<unknown>(null);
-  const [conversationIdUsado, setConversationIdUsado] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/estadisticas-isabela")
@@ -83,19 +81,15 @@ export default function LlamadasPage() {
                       onClick={async () => {
                         setShowModal(true);
                         setSelectedSummary(null);
-                        setDetalleLlamada(null);
-                        setConversationIdUsado(c.conversation_id || null);
                         setLoadingSummary(true);
                         try {
                           const res = await fetch(`/api/llamada-detalle/${c.conversation_id}`);
                           const data = await res.json();
-                          setDetalleLlamada(data);
                           // Buscar el resumen en analysis.summary
                           const resumen = data.analysis?.summary || data.summary || data.call_summary || data.overview || data.description || null;
                           setSelectedSummary(resumen && resumen.trim() ? resumen : null);
                         } catch {
                           setSelectedSummary(null);
-                          setDetalleLlamada(null);
                         }
                         setLoadingSummary(false);
                       }}
