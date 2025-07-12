@@ -3,16 +3,24 @@
 import { useState } from 'react';
 import { FaPhone, FaSpinner, FaCheckCircle, FaTimesCircle, FaInfoCircle } from 'react-icons/fa';
 
+// Definir tipo para los detalles de la llamada
+type CallDetails = {
+  batch_call_id?: string;
+  status?: string;
+  conversation_id?: string;
+  timestamp?: string;
+  [key: string]: unknown;
+};
+
 export default function TestCall() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [callStatus, setCallStatus] = useState<'idle' | 'initiating' | 'success' | 'error'>('idle');
-  const [callDetails, setCallDetails] = useState<any>(null);
+  const [callDetails, setCallDetails] = useState<CallDetails | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [isPolling, setIsPolling] = useState(false);
 
   // Configuración de la API (estos valores deberían venir de variables de entorno)
-  const API_KEY = process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY || 'your-api-key';
   const AGENT_ID = process.env.NEXT_PUBLIC_AGENT_ID || 'your-agent-id';
   const AGENT_PHONE_NUMBER_ID = process.env.NEXT_PUBLIC_AGENT_PHONE_NUMBER_ID || 'your-phone-number-id';
 
