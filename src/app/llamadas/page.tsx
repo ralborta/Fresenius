@@ -88,7 +88,31 @@ export default function LlamadasPage() {
                           console.log("Detalle de la llamada:", data); // DEPURACIÓN
                           // Buscar el resumen en analysis.transcript_summary
                           const resumen = data.analysis?.transcript_summary || data.summary || data.call_summary || data.overview || data.description || null;
-                          setSelectedSummary(resumen && resumen.trim() ? resumen : null);
+                          if (resumen && resumen.trim()) {
+                            // Traducir automáticamente al español usando LibreTranslate
+                            try {
+                              const tradRes = await fetch('https://libretranslate.de/translate', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  q: resumen,
+                                  source: 'en',
+                                  target: 'es',
+                                  format: 'text'
+                                })
+                              });
+                              const tradData = await tradRes.json();
+                              if (tradData.translatedText) {
+                                setSelectedSummary(tradData.translatedText);
+                              } else {
+                                setSelectedSummary(resumen); // Fallback
+                              }
+                            } catch {
+                              setSelectedSummary(resumen); // Fallback
+                            }
+                          } else {
+                            setSelectedSummary(null);
+                          }
                         } catch {
                           setSelectedSummary(null);
                         }
@@ -136,16 +160,16 @@ export default function LlamadasPage() {
       {/* Modal para mostrar el resumen de la llamada */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-200">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative animate-fade-in flex flex-col items-center">
+          <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-5 relative animate-fade-in-up flex flex-col items-center border border-blue-100">
             <button
-              className="absolute top-4 right-4 text-gray-400 hover:text-blue-700 text-2xl font-bold focus:outline-none"
+              className="absolute top-3 right-3 text-gray-400 hover:text-blue-700 text-xl font-bold focus:outline-none"
               onClick={() => setShowModal(false)}
               aria-label="Cerrar"
             >
               ×
             </button>
-            <h2 className="text-2xl font-bold mb-4 text-blue-900 w-full text-left">Resumen de la llamada</h2>
-            <div className="text-gray-700 whitespace-pre-line w-full min-h-[60px] text-lg mb-4">
+            <h2 className="text-xl font-bold mb-3 text-blue-900 w-full text-left">Resumen de la llamada</h2>
+            <div className="text-gray-700 whitespace-pre-line w-full min-h-[40px] text-base mb-3">
               {loadingSummary ? (
                 <span className="italic text-gray-400">Cargando resumen...</span>
               ) : selectedSummary ? (
@@ -154,9 +178,9 @@ export default function LlamadasPage() {
                 <span className="italic text-gray-400">Sin resumen disponible</span>
               )}
             </div>
-            <div className="mt-8 flex justify-end w-full">
+            <div className="mt-4 flex justify-end w-full">
               <button
-                className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
+                className="px-5 py-1.5 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition text-base"
                 onClick={() => setShowModal(false)}
               >Cerrar</button>
             </div>
