@@ -163,7 +163,7 @@ export default function LlamadasPage() {
             <h2 className="text-xl font-bold mb-3 text-blue-900 w-full text-left">Resumen de la llamada</h2>
             <div className="text-gray-700 whitespace-pre-line w-full min-h-[40px] text-base mb-3">
               {loadingSummary ? (
-                <span className="italic text-gray-400">Cargando resumen...</span>
+                <span className="italic text-gray-400">Generando análisis IA Services...</span>
               ) : selectedSummary ? (
                 selectedSummary
               ) : (
