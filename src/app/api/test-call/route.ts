@@ -59,21 +59,26 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(payload),
     });
 
+    // Log de la respuesta completa
+    const responseText = await response.text();
+    console.log('Respuesta cruda de ElevenLabs:', responseText);
+
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error('Error en la API de ElevenLabs:', response.status, errorData);
-      
+      console.error('Error en la API de ElevenLabs:', response.status, responseText);
+      let errorJson = {};
+      try { errorJson = JSON.parse(responseText); } catch {}
       return NextResponse.json(
-        { 
+        {
           error: 'Error al iniciar la llamada de prueba',
-          details: errorData,
-          status: response.status
+          details: errorJson,
+          status: response.status,
+          payload_enviado: payload
         },
         { status: response.status }
       );
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseText);
     console.log('Respuesta exitosa de ElevenLabs:', data);
 
     // Retornar la respuesta con el batch_call_id
