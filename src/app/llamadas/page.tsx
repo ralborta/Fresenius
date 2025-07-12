@@ -161,7 +161,7 @@ export default function LlamadasPage() {
       </div>
       {/* Modal para mostrar el resumen de la llamada */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm transition-opacity duration-200">
           <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-5 relative animate-fade-in-up flex flex-col items-center border border-blue-100">
             <button
               className="absolute top-3 right-3 text-gray-400 hover:text-blue-700 text-xl font-bold focus:outline-none"
