@@ -67,8 +67,8 @@ export default function RootLayout({
           {/* Contenido principal */}
           <main className="flex-1 p-6 bg-white">
             <nav className="w-full flex justify-end items-center gap-6 px-8 py-4 bg-white shadow-sm border-b border-blue-100">
-              <a href="/" className="text-blue-900 font-semibold hover:text-blue-600 transition">Dashboard</a>
-              <a href="/gestion-llamadas" className="text-blue-900 font-semibold hover:text-blue-600 transition">Gestión de Llamadas</a>
+              <Link href="/" className="text-blue-900 font-semibold hover:text-blue-600 transition">Dashboard</Link>
+              <Link href="/gestion-llamadas" className="text-blue-900 font-semibold hover:text-blue-600 transition">Gestión de Llamadas</Link>
             </nav>
             {children}
           </main>
