@@ -105,10 +105,10 @@ export default function LlamadasPage() {
                                 if (tradData.translatedText) {
                                   setSelectedSummary(tradData.translatedText);
                                 } else {
-                                  setSelectedSummary(resumen); // Fallback
+                                  setSelectedSummary('No se pudo traducir el resumen');
                                 }
                               } catch {
-                                setSelectedSummary(resumen); // Fallback
+                                setSelectedSummary('No se pudo traducir el resumen');
                               }
                             } else {
                               setSelectedSummary(null);
