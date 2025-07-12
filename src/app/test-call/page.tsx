@@ -20,9 +20,9 @@ export default function TestCall() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isPolling, setIsPolling] = useState(false);
 
-  // Configuración de la API (estos valores deberían venir de variables de entorno)
-  const AGENT_ID = process.env.NEXT_PUBLIC_AGENT_ID || 'your-agent-id';
-  const AGENT_PHONE_NUMBER_ID = process.env.NEXT_PUBLIC_AGENT_PHONE_NUMBER_ID || 'your-phone-number-id';
+  // IDs hardcodeados
+  const AGENT_ID = "agent_01jyqdepnrf1x9wfrt9kkyy84t";
+  const AGENT_PHONE_NUMBER_ID = "phnum_01jzmyvs1sf49rvgy1vcdrfnd3";
 
   // Log para depuración
   console.log('AGENT_ID:', AGENT_ID, 'PHONE_ID:', AGENT_PHONE_NUMBER_ID);
