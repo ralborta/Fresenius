@@ -89,21 +89,12 @@ export default function LlamadasPage() {
                             // Buscar el resumen en analysis.transcript_summary
                             const resumen = data.analysis?.transcript_summary || data.summary || data.call_summary || data.overview || data.description || null;
                             if (resumen && resumen.trim()) {
-                              // Traducir automáticamente al español usando LibreTranslate
+                              // Traducir automáticamente al español usando MyMemory
                               try {
-                                const tradRes = await fetch('https://libretranslate.de/translate', {
-                                  method: 'POST',
-                                  headers: { 'Content-Type': 'application/json' },
-                                  body: JSON.stringify({
-                                    q: resumen,
-                                    source: 'en',
-                                    target: 'es',
-                                    format: 'text'
-                                  })
-                                });
+                                const tradRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(resumen)}&langpair=en|es`);
                                 const tradData = await tradRes.json();
-                                if (tradData.translatedText) {
-                                  setSelectedSummary(tradData.translatedText);
+                                if (tradData.responseData && tradData.responseData.translatedText) {
+                                  setSelectedSummary(tradData.responseData.translatedText);
                                 } else {
                                   setSelectedSummary('No se pudo traducir el resumen');
                                 }
