@@ -51,8 +51,8 @@ export default function RootLayout({
                 <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
                   <MdMonitorHeart className="text-2xl" /> Monitoring
                 </Link>
-                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
-                  <MdSettings className="text-2xl" /> Settings
+                <Link href="/test-call" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
+                  <MdSettings className="text-2xl" /> Test Call
                 </Link>
               </nav>
             </div>
@@ -69,6 +69,7 @@ export default function RootLayout({
             <nav className="w-full flex justify-end items-center gap-6 px-8 py-4 bg-white shadow-sm border-b border-blue-100">
               <Link href="/" className="text-blue-900 font-semibold hover:text-blue-600 transition">Dashboard</Link>
               <Link href="/gestion-llamadas" className="text-blue-900 font-semibold hover:text-blue-600 transition">Gestión de Llamadas</Link>
+              <Link href="/test-call" className="text-blue-900 font-semibold hover:text-blue-600 transition">Test Call</Link>
             </nav>
             {children}
           </main>
