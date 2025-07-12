@@ -26,6 +26,11 @@ export async function GET() {
     const data = await res.json();
     const conversations = data.conversations || [];
 
+    if (conversations.length > 0) {
+      // Log para ver la estructura real de los datos
+      console.log('Ejemplo de conversación:', conversations[0]);
+    }
+
     // Estadísticas agregadas
     const total_calls = conversations.length;
     const total_minutes = Math.round(conversations.reduce((acc: number, c: Conversation) => acc + (c.call_duration_secs || 0), 0) / 60);

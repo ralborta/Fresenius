@@ -150,9 +150,6 @@ export default function LlamadasPage() {
               ×
             </button>
             <h2 className="text-2xl font-bold mb-4 text-blue-900 w-full text-left">Resumen de la llamada</h2>
-            {conversationIdUsado && (
-              <div className="w-full text-xs text-gray-500 mb-2">ID usado para detalle: <span className="font-mono">{conversationIdUsado}</span></div>
-            )}
             <div className="text-gray-700 whitespace-pre-line w-full min-h-[60px] text-lg mb-4">
               {loadingSummary ? (
                 <span className="italic text-gray-400">Cargando resumen...</span>
@@ -162,13 +159,6 @@ export default function LlamadasPage() {
                 <span className="italic text-gray-400">Sin resumen disponible</span>
               )}
             </div>
-            {/* DEPURACIÓN: Mostrar el JSON completo de la respuesta */}
-            {typeof detalleLlamada === 'object' && detalleLlamada !== null && (
-              <div className="w-full bg-blue-50 rounded p-3 text-xs text-gray-700 overflow-x-auto mb-4">
-                <div className="font-bold mb-1">Respuesta completa del detalle:</div>
-                <pre className="whitespace-pre-wrap break-all">{JSON.stringify(detalleLlamada, null, 2)}</pre>
-              </div>
-            )}
             <div className="mt-8 flex justify-end w-full">
               <button
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition"
