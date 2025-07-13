@@ -1,26 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function GestionLlamadasPage() {
-  const [numeroDestino, setNumeroDestino] = useState('');
-  const [enviando, setEnviando] = useState(false);
-  const [resultado, setResultado] = useState<string | null>(null);
-
-  const agentPhoneNumberId = 'phnum_01jzmyvs1sf49rvgy1vcdrfnd3';
-  const agente = 'Isabela';
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setEnviando(true);
-    setResultado(null);
-    // Aquí iría la lógica para llamar al backend o API de ElevenLabs
-    setTimeout(() => {
-      setEnviando(false);
-      setResultado('Llamada enviada (simulado)');
-    }, 1200);
-  };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 p-6">
       <div className="w-full flex justify-center mb-8 mt-8">

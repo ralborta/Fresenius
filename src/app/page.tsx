@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FaExclamationTriangle, FaPhone, FaClock, FaCheckCircle, FaTimesCircle, FaRegClock } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import Image from 'next/image';
 
 export default function DashboardIsabela() {
   // Estado para los datos del backend
@@ -55,7 +56,7 @@ export default function DashboardIsabela() {
         <div className="w-full flex justify-center mb-8">
           <div className="flex items-center justify-between bg-white rounded-2xl shadow-lg px-8 py-4 border border-gray-200 max-w-3xl w-full">
             <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Dashboard Fresenius</h1>
-            <img src="/Logo_IA_Empresa.png" alt="IA Solutions Logo" className="max-h-10 w-auto ml-4 mr-2 mt-1" style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} />
+            <Image src="/Logo_IA_Empresa.png" alt="IA Solutions Logo" width={120} height={40} className="max-h-10 w-auto ml-4 mr-2 mt-1" style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} />
           </div>
         </div>
         {/* Panel central */}

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -46,7 +46,9 @@ export default function LlamadasPage() {
     <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 p-0">
       <div className="w-full flex justify-center mb-8 mt-8">
         <div className="flex items-center justify-center bg-white rounded-2xl shadow-lg px-8 py-4 border border-gray-200 max-w-2xl w-full">
-          <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide text-center w-full" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Listado de Llamadas</h1>
+          <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide text-center w-full" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>
+            Listado de Llamadas
+          </h1>
         </div>
       </div>
       <div className="w-full max-w-6xl bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 border border-gray-200">
@@ -126,32 +128,32 @@ export default function LlamadasPage() {
                 </tbody>
               </table>
             </div>
-            {/* Paginación */}
-            {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-6">
+          ) : (
+            !loading && <p className="text-gray-400">No hay llamadas registradas.</p>
+          )}
+          {/* Paginación */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-6">
+              <button
+                className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold disabled:opacity-50"
+                onClick={() => setPage(page - 1)}
+                disabled={page === 1}
+              >Anterior</button>
+              {Array.from({ length: totalPages }, (_, i) => (
                 <button
-                  className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold disabled:opacity-50"
-                  onClick={() => setPage(page - 1)}
-                  disabled={page === 1}
-                >Anterior</button>
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i}
-                    className={`px-3 py-1 rounded font-semibold ${page === i + 1 ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-700 hover:bg-blue-200'}`}
-                    onClick={() => setPage(i + 1)}
-                  >{i + 1}</button>
-                ))}
-                <button
-                  className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold disabled:opacity-50"
-                  onClick={() => setPage(page + 1)}
-                  disabled={page === totalPages}
-                >Siguiente</button>
-              </div>
-            )}
-          </div>
-        ) : (
-          !loading && <p className="text-gray-400">No hay llamadas registradas.</p>
-        )}
+                  key={i}
+                  className={`px-3 py-1 rounded font-semibold ${page === i + 1 ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-700 hover:bg-blue-200'}`}
+                  onClick={() => setPage(i + 1)}
+                >{i + 1}</button>
+              ))}
+              <button
+                className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold disabled:opacity-50"
+                onClick={() => setPage(page + 1)}
+                disabled={page === totalPages}
+              >Siguiente</button>
+            </div>
+          )}
+        </div>
       </div>
       {/* Modal para mostrar el resumen de la llamada */}
       {showModal && (
