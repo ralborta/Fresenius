@@ -43,13 +43,14 @@ export async function POST(request: NextRequest) {
         variablesNormalizadas['stock_teorico'] = variablesNormalizadas['stock_previsto'];
         delete variablesNormalizadas['stock_previsto'];
       }
+      // Eliminar nombre_operador si existe
+      if ('nombre_operador' in variablesNormalizadas) {
+        delete variablesNormalizadas['nombre_operador'];
+      }
     } else {
       variablesNormalizadas = {};
     }
-    // Asegurar variables requeridas
-    if (!('nombre_operador' in variablesNormalizadas)) {
-      variablesNormalizadas['nombre_operador'] = '';
-    }
+    // Asegurar solo nombre_paciente
     if (!('nombre_paciente' in variablesNormalizadas)) {
       variablesNormalizadas['nombre_paciente'] = '';
     }
