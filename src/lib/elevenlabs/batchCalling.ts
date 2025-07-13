@@ -37,7 +37,7 @@ export async function sendBatchCall(request: BatchCallRequest): Promise<BatchCal
     });
   };
 
-  validatePayload(request);
+  validatePayload(request as unknown as Record<string, unknown>);
 
   // Configurar timeout
   const controller = new AbortController();
