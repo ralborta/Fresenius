@@ -86,18 +86,17 @@ export async function POST(request: NextRequest) {
     console.log('Cantidad de variables normalizadas:', Object.keys(dynamicVariablesNormalizadas).length);
     console.log('=== FIN DEBUG VARIABLES ===');
     
-    // Payload para la API de ElevenLabs (siguiendo las recomendaciones del proveedor)
+    // Payload para la API de ElevenLabs (siguiendo las recomendaciones del proveedor y soporte)
+    const recipient = {
+      phone_number: phoneNumber,
+      ...dynamicVariablesNormalizadas
+    };
     const batchCallRequest = {
       call_name: `Test Call - ${new Date().toISOString()}`,
       agent_id: agentId,
       agent_phone_number_id: agentPhoneNumberId,
       scheduled_time_unix: Math.floor(Date.now() / 1000), // llamada inmediata
-      recipients: [
-        {
-          phone_number: phoneNumber,
-          dynamic_variables: dynamicVariablesNormalizadas
-        }
-      ]
+      recipients: [recipient]
     };
 
     // Log del payload completo (sin sanitizar) para debugging
