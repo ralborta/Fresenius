@@ -194,64 +194,6 @@ export async function GET(request: NextRequest) {
   }
 } 
 
-export async function GET() {
-  // Endpoint temporal para ejecutar una llamada de prueba directamente desde el backend
-  try {
-    const apiKey = process.env.ELEVENLABS_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({ error: 'API key de ElevenLabs no configurada' }, { status: 500 });
-    }
-    // Datos hardcodeados para la prueba
-    const agentId = 'agent_01jyqdepnrf1x9wfrt9kkyy84t';
-    const agentPhoneNumberId = 'phnum_01jzmyvs1sf49rvgy1vcdrfnd3';
-    const phoneNumber = '+5491133788190';
-    const variablesNormalizadas = {
-      nombre_paciente: 'Prueba API',
-      nombre_operador: 'Isabela',
-      producto: 'Test',
-      fecha_envio: '15/07/2028',
-      stock_teorico: '5'
-    };
-    // Log de las variables
-    console.log('Variables enviadas a ElevenLabs (GET):', JSON.stringify(variablesNormalizadas, null, 2));
-    const payload = {
-      call_name: `Test Call - ${new Date().toISOString()}`,
-      agent_id: agentId,
-      agent_phone_number_id: agentPhoneNumberId,
-      recipients: [
-        {
-          phone_number: phoneNumber,
-          variables: variablesNormalizadas
-        }
-      ],
-      scheduled_time_unix: Math.floor(Date.now() / 1000)
-    };
-    console.log('Iniciando llamada de prueba con payload (GET):', JSON.stringify(payload, null, 2));
-    const response = await fetch('https://api.elevenlabs.io/v1/convai/batch-calling/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'xi-api-key': apiKey,
-      },
-      body: JSON.stringify(payload),
-    });
-    const responseText = await response.text();
-    try {
-      const responseJson = JSON.parse(responseText);
-      console.log('Respuesta cruda de ElevenLabs (GET):', JSON.stringify(responseJson, null, 2));
-    } catch {
-      console.log('Respuesta cruda de ElevenLabs (GET):', responseText);
-    }
-    if (!response.ok) {
-      return NextResponse.json({ error: 'Error al iniciar la llamada de prueba', details: responseText }, { status: response.status });
-    }
-    const data = JSON.parse(responseText);
-    return NextResponse.json({ success: true, batch_call_id: data.id, details: data });
-  } catch (error) {
-    return NextResponse.json({ error: 'Error interno del servidor', details: error instanceof Error ? error.message : error }, { status: 500 });
-  }
-} 
-
 export async function PUT() {
   // Endpoint temporal para crear un agente mínimo de prueba en ElevenLabs
   try {
