@@ -67,6 +67,13 @@ export async function POST(request: NextRequest) {
       scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
     };
 
+    // Validar que no haya espacios en los nombres de las claves del payload
+    Object.keys(payload).forEach(key => {
+      if (/\s/.test(key)) {
+        throw new Error(`El nombre de la clave '${key}' en el payload contiene espacios. Corrígelo antes de enviar a ElevenLabs.`);
+      }
+    });
+
     console.log('Iniciando llamada de prueba con payload:', JSON.stringify(payload, null, 2));
 
     // Llamada a la API de ElevenLabs
