@@ -35,24 +35,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // --- Normalización de variables ---
-    let variablesNormalizadas = variables;
-    if (variables && typeof variables === 'object') {
-      variablesNormalizadas = { ...variables };
-      if ('stock_previsto' in variablesNormalizadas) {
-        variablesNormalizadas['stock_teorico'] = variablesNormalizadas['stock_previsto'];
-        delete variablesNormalizadas['stock_previsto'];
-      }
-      // Eliminar nombre_operador si existe
-      if ('nombre_operador' in variablesNormalizadas) {
-        delete variablesNormalizadas['nombre_operador'];
-      }
+    // --- Prueba mínima: solo nombre_paciente ---
+    let variablesNormalizadas = {};
+    if (variables && typeof variables === 'object' && variables.nombre_paciente) {
+      variablesNormalizadas = { nombre_paciente: variables.nombre_paciente };
     } else {
-      variablesNormalizadas = {};
-    }
-    // Asegurar solo nombre_paciente
-    if (!('nombre_paciente' in variablesNormalizadas)) {
-      variablesNormalizadas['nombre_paciente'] = '';
+      variablesNormalizadas = { nombre_paciente: '' };
     }
     // Log detallado de las variables antes de enviar
     console.log('Variables enviadas a ElevenLabs:', JSON.stringify(variablesNormalizadas, null, 2));
@@ -64,7 +52,7 @@ export async function POST(request: NextRequest) {
       recipients: [
         {
           phone_number: phoneNumber,
-          ...(variablesNormalizadas ? { variables: variablesNormalizadas } : {})
+          variables: variablesNormalizadas
         }
       ],
       scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
