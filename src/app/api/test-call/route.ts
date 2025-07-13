@@ -43,6 +43,15 @@ export async function POST(request: NextRequest) {
         variablesNormalizadas['stock_teorico'] = variablesNormalizadas['stock_previsto'];
         delete variablesNormalizadas['stock_previsto'];
       }
+    } else {
+      variablesNormalizadas = {};
+    }
+    // Asegurar variables requeridas
+    if (!('nombre_operador' in variablesNormalizadas)) {
+      variablesNormalizadas['nombre_operador'] = '';
+    }
+    if (!('nombre_paciente' in variablesNormalizadas)) {
+      variablesNormalizadas['nombre_paciente'] = '';
     }
     // Payload para la API de ElevenLabs
     const payload = {
