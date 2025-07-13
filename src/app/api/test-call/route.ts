@@ -80,8 +80,13 @@ export async function POST(request: NextRequest) {
     });
 
     // Log de la respuesta completa
-    const responseText = await response.text();
-    console.log('Respuesta cruda de ElevenLabs:', responseText);
+    let responseText = await response.text();
+    try {
+      const responseJson = JSON.parse(responseText);
+      console.log('Respuesta cruda de ElevenLabs:', JSON.stringify(responseJson, null, 2));
+    } catch {
+      console.log('Respuesta cruda de ElevenLabs:', responseText);
+    }
 
     if (!response.ok) {
       console.error('Error en la API de ElevenLabs:', response.status, responseText);
