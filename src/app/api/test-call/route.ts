@@ -38,7 +38,11 @@ export async function POST(request: NextRequest) {
     // --- Variables dinámicas para batch calling ---
     let dynamicVariablesNormalizadas = {};
     if (variables && typeof variables === 'object') {
-      dynamicVariablesNormalizadas = { ...variables };
+      // Solo incluir las variables permitidas
+      const permitidas = ['nombre_paciente', 'stock_teorico', 'fecha_envio', 'producto'];
+      dynamicVariablesNormalizadas = Object.fromEntries(
+        Object.entries(variables).filter(([k]) => permitidas.includes(k))
+      );
     }
     // Log detallado de las variables antes de enviar
     console.log('Dynamic variables enviadas a ElevenLabs:', JSON.stringify(dynamicVariablesNormalizadas, null, 2));

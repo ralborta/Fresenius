@@ -58,10 +58,9 @@ export default function TestCall() {
           agentPhoneNumberId: AGENT_PHONE_NUMBER_ID,
           variables: {
             nombre_paciente: nombrePaciente,
-            stock_previsto: stockPrevisto,
+            stock_teorico: stockPrevisto, // Usar el valor de stockPrevisto pero con la clave correcta
             fecha_envio: fechaEnvio,
-            producto: producto,
-            nombre_operador: nombreOperador
+            producto: producto
           }
         }),
       });
