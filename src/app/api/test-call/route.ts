@@ -36,13 +36,12 @@ export async function POST(request: NextRequest) {
     }
 
     // --- Variables dinámicas para batch calling ---
-    let variablesNormalizadas = {};
+    let dynamicVariablesNormalizadas = {};
     if (variables && typeof variables === 'object') {
-      // Solo incluir las variables que realmente se usan en el template
-      variablesNormalizadas = { ...variables };
+      dynamicVariablesNormalizadas = { ...variables };
     }
     // Log detallado de las variables antes de enviar
-    console.log('Variables enviadas a ElevenLabs:', JSON.stringify(variablesNormalizadas, null, 2));
+    console.log('Dynamic variables enviadas a ElevenLabs:', JSON.stringify(dynamicVariablesNormalizadas, null, 2));
     // Payload para la API de ElevenLabs
     const payload = {
       call_name: `Test Call - ${new Date().toISOString()}`,
@@ -51,7 +50,7 @@ export async function POST(request: NextRequest) {
       recipients: [
         {
           phone_number: phoneNumber,
-          variables: variablesNormalizadas
+          dynamic_variables: dynamicVariablesNormalizadas
         }
       ],
       scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
