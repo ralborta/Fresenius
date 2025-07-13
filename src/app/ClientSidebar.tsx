@@ -11,9 +11,9 @@ export function ClientSidebar() {
         Plataforma <span className="text-blue-500">VoiceCall</span>
       </div>
       <nav className="flex-1 flex flex-col gap-2">
-        <a href="/" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-100 text-blue-900 font-semibold">
+        <Link href="/" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-100 text-blue-900 font-semibold">
           <FaTachometerAlt className="text-blue-500" /> Dashboard
-        </a>
+        </Link>
         <a href="/llamadas" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-100 text-blue-900 font-semibold">
           <FaListAlt className="text-blue-500" /> Llamadas
         </a>
