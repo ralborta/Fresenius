@@ -69,6 +69,8 @@ export async function POST(request: NextRequest) {
       ],
       scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
     };
+    // Log del payload completo antes de enviar
+    console.log('Iniciando llamada de prueba con payload:', JSON.stringify(payload, null, 2));
 
     // Validar que no haya espacios en los nombres de las claves del payload
     Object.keys(payload).forEach(key => {
@@ -202,5 +204,37 @@ export async function GET(request: NextRequest) {
       },
       { status: 500 }
     );
+  }
+} 
+
+export async function PUT(request: NextRequest) {
+  // Endpoint temporal para crear un agente mínimo de prueba en ElevenLabs
+  try {
+    const apiKey = process.env.ELEVENLABS_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: 'API key de ElevenLabs no configurada' }, { status: 500 });
+    }
+    const agentConfig = {
+      conversation_config: {
+        name: 'AgentePruebaMinimo',
+        first_message: 'Hola {nombre_paciente}',
+        system_prompt: 'Agente de prueba para test de variables dinámicas.'
+      }
+    };
+    const response = await fetch('https://api.elevenlabs.io/v1/convai/agents/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'xi-api-key': apiKey,
+      },
+      body: JSON.stringify(agentConfig),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return NextResponse.json({ error: 'Error al crear agente', details: data }, { status: response.status });
+    }
+    return NextResponse.json({ success: true, agent_id: data.agent_id, details: data });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error interno al crear agente', details: error instanceof Error ? error.message : error }, { status: 500 });
   }
 } 
