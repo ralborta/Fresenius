@@ -20,6 +20,13 @@ export default function TestCall() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isPolling, setIsPolling] = useState(false);
 
+  // Estados para los nuevos campos
+  const [nombrePaciente, setNombrePaciente] = useState('');
+  const [stockPrevisto, setStockPrevisto] = useState('');
+  const [fechaEnvio, setFechaEnvio] = useState('');
+  const [producto, setProducto] = useState('');
+  const nombreOperador = 'Isabela';
+
   // IDs hardcodeados
   const AGENT_ID = "agent_01jyqdepnrf1x9wfrt9kkyy84t";
   const AGENT_PHONE_NUMBER_ID = "phnum_01jzmyvs1sf49rvgy1vcdrfnd3";
@@ -49,6 +56,13 @@ export default function TestCall() {
           phoneNumber: phoneNumber,
           agentId: AGENT_ID,
           agentPhoneNumberId: AGENT_PHONE_NUMBER_ID,
+          variables: {
+            nombre_paciente: nombrePaciente,
+            stock_previsto: stockPrevisto,
+            fecha_envio: fechaEnvio,
+            producto: producto,
+            nombre_operador: nombreOperador
+          }
         }),
       });
 
@@ -192,6 +206,61 @@ export default function TestCall() {
             <p className="text-xs text-gray-500 mt-1">
               Formato internacional: +[código país][código área][número]
             </p>
+          </div>
+
+          {/* Campos adicionales */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Nombre del paciente</label>
+            <input
+              type="text"
+              value={nombrePaciente}
+              onChange={e => setNombrePaciente(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black bg-white"
+              disabled={isLoading}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Stock previsto</label>
+            <input
+              type="text"
+              value={stockPrevisto}
+              onChange={e => setStockPrevisto(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black bg-white"
+              disabled={isLoading}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Fecha de envío</label>
+            <input
+              type="text"
+              value={fechaEnvio}
+              onChange={e => setFechaEnvio(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black bg-white"
+              disabled={isLoading}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Producto</label>
+            <input
+              type="text"
+              value={producto}
+              onChange={e => setProducto(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black bg-white"
+              disabled={isLoading}
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Nombre del operador</label>
+            <input
+              type="text"
+              value={nombreOperador}
+              readOnly
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed"
+            />
           </div>
 
           {/* Botón de llamada */}

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { phoneNumber, agentId, agentPhoneNumberId } = await request.json();
+    const { phoneNumber, agentId, agentPhoneNumberId, variables } = await request.json();
 
     // Validaciones
     if (!phoneNumber) {
@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
       agent_phone_number_id: agentPhoneNumberId,
       recipients: [
         {
-          phone_number: phoneNumber
+          phone_number: phoneNumber,
+          ...(variables ? { variables } : {})
         }
       ],
       scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
