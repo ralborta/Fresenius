@@ -117,7 +117,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       batch_call_id: response.id,
-      status: 'initiated',
       message: 'Llamada de prueba iniciada exitosamente',
       timestamp: new Date().toISOString(),
       ...response
