@@ -207,7 +207,7 @@ export async function GET(request: NextRequest) {
   }
 } 
 
-export async function PUT(request: NextRequest) {
+export async function PUT() {
   // Endpoint temporal para crear un agente mínimo de prueba en ElevenLabs
   try {
     const apiKey = process.env.ELEVENLABS_API_KEY;
