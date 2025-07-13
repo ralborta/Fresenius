@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
           ...(variablesNormalizadas ? { variables: variablesNormalizadas } : {})
         }
       ],
-      scheduled_time_unix: Math.floor(Date.now() / 1000) + 2 // llamada inmediata (2 segundos en el futuro)
+      scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
     };
 
     // Validar que no haya espacios en los nombres de las claves del payload
