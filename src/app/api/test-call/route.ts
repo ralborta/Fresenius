@@ -179,7 +179,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       batch_call_id: batchCallId,
-      status: response.status,
       conversation_id: response.conversation_id,
       timestamp: new Date().toISOString(),
       ...response
