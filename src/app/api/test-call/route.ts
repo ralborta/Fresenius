@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
           ...(variablesNormalizadas ? { variables: variablesNormalizadas } : {})
         }
       ],
-      send_immediately: true // llamada inmediata
+      scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
     };
 
     console.log('Iniciando llamada de prueba con payload:', payload);
