@@ -50,13 +50,16 @@ export default function DashboardIsabela() {
       <div className="mr-2 mt-8">
         {/* El menú se renderiza desde ClientSidebar */}
       </div>
+      {/* Encabezado flotante */}
+      <div className="w-full flex justify-center mb-8">
+        <div className="flex items-center justify-between bg-white rounded-2xl shadow-lg px-8 py-4 border border-gray-200 max-w-3xl w-full">
+          <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Dashboard Fresenius</h1>
+          <img src="/Logo_IA_Empresa.png" alt="IA Solutions Logo" className="max-h-10 w-auto ml-4 mr-2 mt-1" style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} />
+        </div>
+      </div>
       {/* Panel central */}
       <div className="flex-1 flex flex-col items-center justify-start w-full max-w-7xl mt-8">
         <div className="w-full bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-          <div className="w-full flex items-center justify-between mb-8">
-            <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Dashboard Fresenius</h1>
-            <img src="/Logo_IA_Empresa.png" alt="IA Solutions Logo" className="max-h-10 w-auto ml-4 mr-2 mt-1" style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} />
-          </div>
           {loading && <p className="text-gray-500">Cargando datos...</p>}
           {error && <p className="text-red-500">{error}</p>}
           {!loading && !error && (
