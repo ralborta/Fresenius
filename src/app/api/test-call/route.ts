@@ -35,6 +35,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Log temporal para debug de variable de entorno
+    console.log('DEBUG ELEVENLABS_API_KEY:', apiKey ? 'PRESENTE' : 'VACÍA');
+
     // --- Variables dinámicas para batch calling ---
     let dynamicVariablesNormalizadas = {};
     if (variables && typeof variables === 'object') {
