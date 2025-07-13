@@ -47,11 +47,11 @@ export default function DashboardIsabela() {
     <div className="min-h-screen flex flex-row items-start justify-center bg-gray-50">
       {/* Menú lateral */}
       {/* El menú ahora es flotante, así que el layout principal debe dejar espacio */}
-      <div className="mr-4 mt-8">
+      <div className="mr-2 mt-8">
         {/* El menú se renderiza desde ClientSidebar */}
       </div>
       {/* Panel central */}
-      <div className="flex-1 flex flex-col items-center justify-start w-full max-w-6xl mt-8">
+      <div className="flex-1 flex flex-col items-center justify-start w-full max-w-7xl mt-8">
         <div className="w-full bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
           <div className="w-full flex items-center justify-between mb-8">
             <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Dashboard Fresenius</h1>
@@ -88,6 +88,8 @@ export default function DashboardIsabela() {
                   );
                 })}
               </div>
+              {/* Línea divisoria azul moderna */}
+              <div className="w-full h-1 rounded-full bg-gradient-to-r from-blue-400/60 via-blue-500/80 to-purple-400/60 mb-8 opacity-80" />
               {/* Gráfica y paneles inferiores */}
               <div className="grid grid-cols-3 gap-6 w-full">
                 {/* Gráfica Call Monitor */}
