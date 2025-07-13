@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       recipients: [
         {
           phone_number: phoneNumber,
-          ...(variablesNormalizadas ? { variables: variablesNormalizadas } : {})
+          ...(variablesNormalizadas ? { dynamic_variables: variablesNormalizadas } : {})
         }
       ],
       scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
