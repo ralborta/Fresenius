@@ -35,6 +35,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // --- Normalización de variables ---
+    let variablesNormalizadas = variables;
+    if (variables && typeof variables === 'object') {
+      variablesNormalizadas = { ...variables };
+      if ('stock_previsto' in variablesNormalizadas) {
+        variablesNormalizadas['stock_teorico'] = variablesNormalizadas['stock_previsto'];
+        delete variablesNormalizadas['stock_previsto'];
+      }
+    }
     // Payload para la API de ElevenLabs
     const payload = {
       call_name: `Test Call - ${new Date().toISOString()}`,
@@ -43,10 +52,10 @@ export async function POST(request: NextRequest) {
       recipients: [
         {
           phone_number: phoneNumber,
-          ...(variables ? { variables } : {})
+          ...(variablesNormalizadas ? { variables: variablesNormalizadas } : {})
         }
       ],
-      scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
+      send_immediately: true // llamada inmediata
     };
 
     console.log('Iniciando llamada de prueba con payload:', payload);
