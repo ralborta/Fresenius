@@ -12,6 +12,9 @@ interface Conversation {
   status?: string;
   call_successful?: string;
   summary?: string;
+  telefono_destino?: string;
+  nombre_paciente?: string;
+  producto?: string;
 }
 
 const PAGE_SIZE = 10;
@@ -62,6 +65,9 @@ export default function LlamadasPage() {
                   <tr className="bg-blue-50 text-blue-900">
                     <th className="px-4 py-2 font-semibold">ID</th>
                     <th className="px-4 py-2 font-semibold">Agente</th>
+                    <th className="px-4 py-2 font-semibold">Paciente</th>
+                    <th className="px-4 py-2 font-semibold">Producto</th>
+                    <th className="px-4 py-2 font-semibold">Teléfono</th>
                     <th className="px-4 py-2 font-semibold">Estatus</th>
                     <th className="px-4 py-2 font-semibold">Fecha y hora</th>
                     <th className="px-4 py-2 font-semibold">Resultado</th>
@@ -118,6 +124,9 @@ export default function LlamadasPage() {
                       >
                         <td className="px-4 py-2 text-gray-700 font-mono">{correlativo}</td>
                         <td className="px-4 py-2 text-gray-700">{c.agent_name || '-'}</td>
+                        <td className="px-4 py-2 text-gray-700">{c.nombre_paciente || '-'}</td>
+                        <td className="px-4 py-2 text-gray-700">{c.producto || '-'}</td>
+                        <td className="px-4 py-2 text-gray-700">{c.telefono_destino || '-'}</td>
                         <td className="px-4 py-2 text-gray-700">{c.status || '-'}</td>
                         <td className="px-4 py-2 text-gray-700">{fechaStr}</td>
                         <td className="px-4 py-2 text-gray-700">{c.call_successful || '-'}</td>
