@@ -7,7 +7,7 @@ export function ClientSidebar() {
   const [configOpen, setConfigOpen] = useState(false);
   return (
     <div className="flex flex-col items-center min-h-screen py-6 bg-gray-50">
-      <aside className="w-60 bg-blue-900 rounded-2xl shadow-lg border border-blue-800 flex flex-col p-4 mb-4">
+      <aside className="w-60 h-[92vh] bg-blue-900 rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.22)] border border-blue-800 flex flex-col p-4 mb-4">
         <div className="mb-8 text-2xl font-extrabold text-white tracking-wide flex items-center gap-2 select-none">
           <span className="inline-block bg-blue-800 rounded-full p-2"><FaTachometerAlt className="text-blue-300 text-xl" /></span>
           <span>Plataforma <span className="text-blue-300">VoiceCall</span></span>

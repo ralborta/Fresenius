@@ -47,7 +47,7 @@ export default function DashboardIsabela() {
     <div className="min-h-screen flex flex-row items-start justify-center bg-gray-50">
       {/* Menú lateral */}
       {/* El menú ahora es flotante, así que el layout principal debe dejar espacio */}
-      <div className="mr-8 mt-8">
+      <div className="mr-4 mt-8">
         {/* El menú se renderiza desde ClientSidebar */}
       </div>
       {/* Panel central */}
