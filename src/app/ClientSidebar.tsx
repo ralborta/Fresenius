@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { FaCog, FaPhone, FaUserFriends, FaPhoneAlt, FaFileUpload, FaTachometerAlt, FaChartBar, FaListAlt, FaEye } from 'react-icons/fa';
-import { TbUserVoice } from 'react-icons/tb';
+import { MdOutlineSupportAgent } from 'react-icons/md';
 import Link from "next/link";
 
 export function ClientSidebar() {
@@ -10,7 +10,7 @@ export function ClientSidebar() {
     <div className="flex flex-col items-center min-h-screen py-6 bg-gray-50">
       <aside className="w-60 h-[92vh] bg-blue-900 rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.22)] border border-blue-800 flex flex-col p-4 mb-4 relative">
         <div className="mb-8 text-2xl font-extrabold text-white tracking-wide flex items-center gap-2 select-none">
-          <span className="inline-block bg-blue-800 rounded-full p-2"><TbUserVoice className="text-blue-300 text-xl" /></span>
+          <span className="inline-block bg-blue-800 rounded-full p-2"><MdOutlineSupportAgent className="text-blue-300 text-xl" /></span>
           <span>Plataforma <span className="text-blue-300">VoiceCall</span></span>
         </div>
         <nav className="flex-1 flex flex-col gap-2">
@@ -57,7 +57,7 @@ export function ClientSidebar() {
         {/* Opción Soporte al pie */}
         <div className="absolute bottom-4 left-0 w-full flex justify-center">
           <a href="#" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-800 hover:bg-blue-700 text-blue-100 font-semibold shadow transition-all">
-            <span className="bg-blue-700 rounded-full p-1"><TbUserVoice className="text-blue-300 text-lg" /></span> Soporte
+            <span className="bg-blue-700 rounded-full p-1"><MdOutlineSupportAgent className="text-blue-300 text-lg" /></span> Soporte
           </a>
         </div>
       </aside>
