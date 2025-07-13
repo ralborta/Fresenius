@@ -15,11 +15,11 @@ export async function POST(request: NextRequest) {
     console.log('Es undefined:', variables === undefined);
 
     // Simular el procesamiento de variables dinámicas
-    let dynamicVariablesNormalizadas = {};
+    let dynamicVariablesNormalizadas: Record<string, unknown> = {};
     if (variables && typeof variables === 'object') {
       const permitidas = ['nombre_paciente', 'stock_teorico', 'fecha_envio', 'producto'];
       dynamicVariablesNormalizadas = Object.fromEntries(
-        Object.entries(variables).filter(([k]) => permitidas.includes(k))
+        Object.entries(variables as Record<string, unknown>).filter(([k]) => permitidas.includes(k))
       );
     }
 

@@ -9,13 +9,16 @@ function isValidPhoneNumber(phone: string): boolean {
 }
 
 // Función para sanitizar logs (remover datos sensibles)
-function sanitizePayloadForLogs(payload: any): any {
+function sanitizePayloadForLogs(payload: Record<string, unknown>): Record<string, unknown> {
   const sanitized = { ...payload };
   if (sanitized.recipients && Array.isArray(sanitized.recipients)) {
-    sanitized.recipients = sanitized.recipients.map((recipient: any) => ({
-      ...recipient,
-      phone_number: recipient.phone_number ? `${recipient.phone_number.slice(0, 4)}***` : '***'
-    }));
+    sanitized.recipients = sanitized.recipients.map((recipient) => {
+      const rec = recipient as Record<string, unknown>;
+      return {
+        ...rec,
+        phone_number: typeof rec.phone_number === 'string' ? `${rec.phone_number.slice(0, 4)}***` : '***'
+      };
+    });
   }
   return sanitized;
 }

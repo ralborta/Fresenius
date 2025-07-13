@@ -24,14 +24,14 @@ export async function sendBatchCall(request: BatchCallRequest): Promise<BatchCal
   }
 
   // Validar que no haya espacios en los nombres de las claves
-  const validatePayload = (obj: any, path: string = '') => {
+  const validatePayload = (obj: Record<string, unknown>, path: string = '') => {
     Object.keys(obj).forEach(key => {
       const currentPath = path ? `${path}.${key}` : key;
       if (/\s/.test(key)) {
         throw new Error(`El nombre de la clave '${currentPath}' contiene espacios. Corrígelo antes de enviar a ElevenLabs.`);
       }
       if (typeof obj[key] === 'object' && obj[key] !== null) {
-        validatePayload(obj[key], currentPath);
+        validatePayload(obj[key] as Record<string, unknown>, currentPath);
       }
     });
   };
@@ -57,7 +57,7 @@ export async function sendBatchCall(request: BatchCallRequest): Promise<BatchCal
 
     if (!response.ok) {
       const errorText = await response.text();
-      let errorJson = {};
+      let errorJson: Record<string, unknown> = {};
       try {
         errorJson = JSON.parse(errorText);
       } catch {

@@ -10,7 +10,7 @@ export default function TestVariables() {
   const [fechaEnvio, setFechaEnvio] = useState('');
   const [producto, setProducto] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [testResult, setTestResult] = useState<any>(null);
+  const [testResult, setTestResult] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState('');
 
   // IDs hardcodeados para prueba
