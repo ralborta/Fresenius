@@ -4,6 +4,8 @@ import "./globals.css";
 import { ReactNode } from "react";
 import Link from "next/link";
 import { MdDashboard, MdCall, MdBarChart, MdMonitorHeart, MdSettings } from "react-icons/md";
+import { useState } from 'react';
+import { FaCog, FaPhone, FaUserFriends, FaPhoneAlt, FaFileUpload, FaTachometerAlt, FaChartBar, FaListAlt, FaEye } from 'react-icons/fa';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,52 +27,62 @@ export default function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const [configOpen, setConfigOpen] = useState(false);
   return (
     <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-slate-800`}
       >
         <div className="flex min-h-screen">
-          {/* Sidebar celeste suave */}
-          <aside className="w-64 bg-[#e0f2fe] border-r border-[#bae6fd] flex flex-col justify-between py-8 px-4 shadow-lg">
-            <div>
-              <div className="flex items-center gap-2 mb-10">
-                <span className="text-2xl font-bold text-sky-700">Plataforma</span>
-                <span className="text-2xl font-bold text-sky-400">VoiceCall</span>
-              </div>
-              <nav className="flex flex-col gap-2">
-                <Link href="/" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-900 font-medium bg-gradient-to-r from-sky-200/90 to-sky-100/80 shadow-md">
-                  <MdDashboard className="text-2xl" /> Dashboard
-                </Link>
-                <Link href="/llamadas" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
-                  <MdCall className="text-2xl" /> Llamadas
-                </Link>
-                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
-                  <MdBarChart className="text-2xl" /> Stats
-                </Link>
-                <Link href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
-                  <MdMonitorHeart className="text-2xl" /> Monitoring
-                </Link>
-                <Link href="/test-call" className="flex items-center gap-3 px-4 py-3 rounded-lg text-sky-700 hover:bg-sky-100 font-medium">
-                  <MdSettings className="text-2xl" /> Test Call
-                </Link>
-              </nav>
+          {/* Menú lateral */}
+          <aside className="w-64 bg-blue-50 border-r border-blue-100 flex flex-col p-4">
+            <div className="mb-8 text-2xl font-bold text-blue-900">
+              Plataforma <span className="text-blue-500">VoiceCall</span>
             </div>
-            <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-sky-200 mt-8">
-              <span className="w-10 h-10 rounded-full bg-sky-400 flex items-center justify-center font-bold text-sky-900 text-xl">R</span>
+            <nav className="flex-1 flex flex-col gap-2">
+              <a href="/" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-100 text-blue-900 font-semibold">
+                <FaTachometerAlt className="text-blue-500" /> Dashboard
+              </a>
+              <a href="/llamadas" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-100 text-blue-900 font-semibold">
+                <FaListAlt className="text-blue-500" /> Llamadas
+              </a>
+              <a href="/stats" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-100 text-blue-900 font-semibold">
+                <FaChartBar className="text-blue-500" /> Stats
+              </a>
+              <a href="/monitoring" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-100 text-blue-900 font-semibold">
+                <FaEye className="text-blue-500" /> Monitoring
+              </a>
+              {/* Grupo Configuración */}
               <div>
-                <div className="font-semibold text-sky-900">Raúl</div>
-                <div className="text-xs text-sky-700">Admin</div>
+                <button
+                  className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-100 text-blue-900 font-semibold w-full focus:outline-none"
+                  onClick={() => setConfigOpen((open) => !open)}
+                  aria-expanded={configOpen}
+                >
+                  <FaCog className="text-blue-500" /> Configuración
+                  <span className="ml-auto text-xs">{configOpen ? '▲' : '▼'}</span>
+                </button>
+                {configOpen && (
+                  <div className="ml-8 mt-2 flex flex-col gap-1">
+                    <a href="/test-call" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-100 text-blue-800">
+                      <FaPhone className="text-blue-400" /> Llamadas
+                    </a>
+                    <button className="flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-100 text-blue-800 cursor-default" disabled>
+                      <FaUserFriends className="text-blue-400" /> Agentes
+                    </button>
+                    <button className="flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-100 text-blue-800 cursor-default" disabled>
+                      <FaPhoneAlt className="text-blue-400" /> Números de teléfono
+                    </button>
+                    <button className="flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-100 text-blue-800 cursor-default" disabled>
+                      <FaFileUpload className="text-blue-400" /> Subir archivo
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
+            </nav>
           </aside>
           {/* Contenido principal */}
-          <main className="flex-1 p-6 bg-white">
-            <nav className="w-full flex justify-end items-center gap-6 px-8 py-4 bg-white shadow-sm border-b border-blue-100">
-              <Link href="/" className="text-blue-900 font-semibold hover:text-blue-600 transition">Dashboard</Link>
-              <Link href="/gestion-llamadas" className="text-blue-900 font-semibold hover:text-blue-600 transition">Gestión de Llamadas</Link>
-              <Link href="/test-call" className="text-blue-900 font-semibold hover:text-blue-600 transition">Test Call</Link>
-            </nav>
+          <main className="flex-1 bg-white p-8">
             {children}
           </main>
         </div>
