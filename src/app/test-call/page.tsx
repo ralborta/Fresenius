@@ -74,8 +74,13 @@ export default function TestCall() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-white p-6">
-      <div className="w-full max-w-2xl">
+    <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 p-6">
+      <div className="w-full flex justify-center mb-8 mt-8">
+        <div className="flex items-center justify-center bg-white rounded-2xl shadow-lg px-8 py-4 border border-gray-200 max-w-2xl w-full">
+          <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide text-center w-full" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Llamada Telefónica</h1>
+        </div>
+      </div>
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 border border-gray-200">
         {/* Encabezado elegante */}
         <div className="flex flex-col items-center justify-center mb-8">
           <div className="flex items-center gap-4 mb-2">

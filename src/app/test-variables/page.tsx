@@ -56,17 +56,13 @@ export default function TestVariables() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-white p-6">
-      <div className="w-full max-w-4xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide mb-4">
-            Test Variables Dinámicas
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Diagnóstico de variables dinámicas para ElevenLabs
-          </p>
+    <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 p-6">
+      <div className="w-full flex justify-center mb-8 mt-8">
+        <div className="flex items-center justify-center bg-white rounded-2xl shadow-lg px-8 py-4 border border-gray-200 max-w-2xl w-full">
+          <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide text-center w-full" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Test Variables Dinámicas</h1>
         </div>
-
+      </div>
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 border border-gray-200">
         {/* Formulario de prueba */}
         <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Datos de Prueba</h2>

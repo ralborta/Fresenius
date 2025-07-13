@@ -22,37 +22,19 @@ export default function GestionLlamadasPage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 bg-white rounded-2xl shadow-lg p-8 border border-blue-100">
-      <h1 className="text-2xl font-bold text-blue-900 mb-6">Gestión de Llamadas</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <div>
-          <label className="block text-sm font-semibold text-blue-900 mb-1">Agente</label>
-          <input type="text" value={agente} disabled className="w-full px-3 py-2 rounded border border-blue-200 bg-blue-50 text-blue-900 font-semibold" />
+    <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 p-6">
+      <div className="w-full flex justify-center mb-8 mt-8">
+        <div className="flex items-center justify-center bg-white rounded-2xl shadow-lg px-8 py-4 border border-gray-200 max-w-2xl w-full">
+          <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide text-center w-full" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Gestión de Llamadas</h1>
         </div>
-        <div>
-          <label className="block text-sm font-semibold text-blue-900 mb-1">Agent Phone Number ID</label>
-          <input type="text" value={agentPhoneNumberId} disabled className="w-full px-3 py-2 rounded border border-blue-200 bg-blue-50 text-blue-900 font-mono" />
+      </div>
+      <div className="w-full max-w-lg bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 border border-gray-200 flex flex-col items-center justify-center min-h-[300px]">
+        {/* Placeholder elegante */}
+        <div className="flex flex-col items-center gap-4">
+          <span className="text-5xl text-blue-300"><svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' className='w-12 h-12'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M13 16h-1v-4h-1m1-4h.01M12 20.5C6.753 20.5 2.5 16.247 2.5 11S6.753 1.5 12 1.5 21.5 5.753 21.5 11 17.247 20.5 12 20.5z' /></svg></span>
+          <div className="text-xl text-blue-900 font-semibold">Próximamente</div>
+          <div className="text-gray-500 text-center">Esta sección estará disponible en una próxima actualización.</div>
         </div>
-        <div>
-          <label className="block text-sm font-semibold text-blue-900 mb-1">Número destino</label>
-          <input type="tel" required value={numeroDestino} onChange={e => setNumeroDestino(e.target.value)} placeholder="Ej: +5491122334455" className="w-full px-3 py-2 rounded border border-blue-200 focus:border-blue-400 outline-none" />
-        </div>
-        <button type="submit" disabled={enviando || !numeroDestino} className="mt-2 px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-50">
-          {enviando ? 'Enviando...' : 'Lanzar llamada'}
-        </button>
-        {resultado && <div className="text-green-600 font-semibold mt-2">{resultado}</div>}
-      </form>
-      <div className="mt-8 p-4 bg-blue-50 rounded text-xs text-blue-900">
-        <div className="font-bold mb-2">Endpoint:</div>
-        <code className="block mb-2">POST https://api.elevenlabs.io/v1/convai/batch-calling/submit</code>
-        <div className="font-bold mb-1">Payload ejemplo:</div>
-        <pre className="bg-white rounded p-2 border border-blue-100 overflow-x-auto">
-{`{
-  "agent_phone_number_id": "${agentPhoneNumberId}",
-  "agent_id": "(ID del agente)",
-  "destination": "${numeroDestino || '+5491122334455'}"
-}`}
-        </pre>
       </div>
     </div>
   );

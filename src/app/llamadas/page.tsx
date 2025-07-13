@@ -43,13 +43,17 @@ export default function LlamadasPage() {
   const paginatedConversations = conversations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-start bg-white p-0 ${showModal ? 'overflow-hidden' : ''}`}>
-      <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide mb-8 mt-4" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Listado de Llamadas</h1>
-      {loading && <p className="text-gray-500">Cargando llamadas...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      <div className={`${showModal ? 'filter blur-sm pointer-events-none select-none' : ''} w-full flex flex-col items-center`}>
-        {conversations.length > 0 ? (
-          <div className="w-full max-w-6xl bg-white rounded-2xl shadow-lg p-6 mb-10 border border-blue-100">
+    <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 p-0">
+      <div className="w-full flex justify-center mb-8 mt-8">
+        <div className="flex items-center justify-center bg-white rounded-2xl shadow-lg px-8 py-4 border border-gray-200 max-w-2xl w-full">
+          <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide text-center w-full" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Listado de Llamadas</h1>
+        </div>
+      </div>
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 border border-gray-200">
+        {loading && <p className="text-gray-500">Cargando llamadas...</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        <div className={`${showModal ? 'filter blur-sm pointer-events-none select-none' : ''} w-full flex flex-col items-center`}>
+          {conversations.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm text-left">
                 <thead>
