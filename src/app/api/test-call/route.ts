@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
     };
 
-    console.log('Iniciando llamada de prueba con payload:', payload);
+    console.log('Iniciando llamada de prueba con payload:', JSON.stringify(payload, null, 2));
 
     // Llamada a la API de ElevenLabs
     const response = await fetch('https://api.elevenlabs.io/v1/convai/batch-calling/submit', {
