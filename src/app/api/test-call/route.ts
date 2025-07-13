@@ -54,6 +54,8 @@ export async function POST(request: NextRequest) {
     if (!('nombre_paciente' in variablesNormalizadas)) {
       variablesNormalizadas['nombre_paciente'] = '';
     }
+    // Log detallado de las variables antes de enviar
+    console.log('Variables enviadas a ElevenLabs:', JSON.stringify(variablesNormalizadas, null, 2));
     // Payload para la API de ElevenLabs
     const payload = {
       call_name: `Test Call - ${new Date().toISOString()}`,
@@ -62,7 +64,7 @@ export async function POST(request: NextRequest) {
       recipients: [
         {
           phone_number: phoneNumber,
-          ...(variablesNormalizadas ? { dynamic_variables: variablesNormalizadas } : {})
+          ...(variablesNormalizadas ? { variables: variablesNormalizadas } : {})
         }
       ],
       scheduled_time_unix: Math.floor(Date.now() / 1000) // llamada inmediata
