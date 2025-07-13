@@ -12,7 +12,6 @@ export async function GET() {
 
   try {
     let allConversations: Conversation[] = [];
-    let page = 1;
     let hasMore = true;
     let nextPageToken: string | null = null;
     const PAGE_SIZE = 100;
@@ -42,7 +41,6 @@ export async function GET() {
       } else {
         hasMore = false;
       }
-      page++;
     }
 
     if (allConversations.length > 0) {
