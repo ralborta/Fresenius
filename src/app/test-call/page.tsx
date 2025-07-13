@@ -7,9 +7,7 @@ export default function TestCall() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [callStatus, setCallStatus] = useState<'idle' | 'initiating' | 'success' | 'error'>('idle');
-  const [callDetails, setCallDetails] = useState<Record<string, unknown> | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isPolling, setIsPolling] = useState(false);
   const [nombrePaciente, setNombrePaciente] = useState('');
   const [stockPrevisto, setStockPrevisto] = useState('');
   const [fechaEnvio, setFechaEnvio] = useState('');
@@ -29,7 +27,6 @@ export default function TestCall() {
     setIsLoading(true);
     setCallStatus('initiating');
     setErrorMessage('');
-    setCallDetails(null);
     try {
       const callResponse = await fetch('/api/test-call', {
         method: 'POST',
@@ -50,11 +47,8 @@ export default function TestCall() {
         throw new Error('Error al iniciar la llamada');
       }
       const callData = await callResponse.json();
-      setCallDetails(callData);
       if (callData.batch_call_id) {
         setCallStatus('success');
-        setCallDetails(callData);
-        startPolling(callData.batch_call_id);
       } else {
         throw new Error('No se recibió batch_call_id');
       }
@@ -64,34 +58,6 @@ export default function TestCall() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const startPolling = async (batchCallId: string) => {
-    setIsPolling(true);
-    let attempts = 0;
-    const maxAttempts = 30;
-    const pollStatus = async () => {
-      try {
-        const response = await fetch(`/api/test-call?batch_call_id=${batchCallId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setCallDetails(prev => ({ ...prev, ...data }));
-          if (data.status === 'completed' || data.status === 'failed' || data.status === 'cancelled') {
-            setIsPolling(false);
-            return;
-          }
-        }
-        attempts++;
-        if (attempts < maxAttempts) {
-          setTimeout(pollStatus, 10000);
-        } else {
-          setIsPolling(false);
-        }
-      } catch {
-        setIsPolling(false);
-      }
-    };
-    setTimeout(pollStatus, 5000);
   };
 
   const getStatusIcon = () => {
@@ -104,19 +70,6 @@ export default function TestCall() {
         return <FaTimesCircle className="text-red-500 text-2xl" />;
       default:
         return <FaPhone className="text-sky-500 text-2xl" />;
-    }
-  };
-
-  const getStatusMessage = () => {
-    switch (callStatus) {
-      case 'initiating':
-        return 'Iniciando llamada...';
-      case 'success':
-        return 'Llamada iniciada exitosamente';
-      case 'error':
-        return 'Error al iniciar la llamada';
-      default:
-        return 'Listo para iniciar una llamada';
     }
   };
 
