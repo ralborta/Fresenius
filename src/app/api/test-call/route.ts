@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Log de la respuesta completa
-    let responseText = await response.text();
+    const responseText = await response.text();
     try {
       const responseJson = JSON.parse(responseText);
       console.log('Respuesta cruda de ElevenLabs:', JSON.stringify(responseJson, null, 2));
