@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     // Retornar la respuesta con el batch_call_id
     return NextResponse.json({
       success: true,
-      batch_call_id: data.batch_call_id,
+      batch_call_id: data.id, // mapeo correcto
       status: 'initiated',
       message: 'Llamada de prueba iniciada exitosamente',
       timestamp: new Date().toISOString(),
