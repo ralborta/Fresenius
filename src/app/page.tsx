@@ -44,89 +44,99 @@ export default function DashboardIsabela() {
   const active = apiData?.active ?? 0;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-white p-0">
-      <div className="w-full max-w-6xl flex items-center justify-between mt-4 mb-8">
-        <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Dashboard Fresenius</h1>
-        <img src="/Logo_IA_Empresa.png" alt="IA Solutions Logo" className="max-h-10 w-auto ml-4 mr-2 mt-1" style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} />
+    <div className="min-h-screen flex flex-row items-start justify-center bg-gray-50">
+      {/* Menú lateral */}
+      {/* El menú ahora es flotante, así que el layout principal debe dejar espacio */}
+      <div className="mr-8 mt-8">
+        {/* El menú se renderiza desde ClientSidebar */}
       </div>
-      {loading && <p className="text-gray-500">Cargando datos...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      {!loading && !error && (
-        <>
-          {/* Tarjetas de métricas */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl mb-8">
-            {metricasDashboard.map((m, i) => {
-              // Paleta de colores sutiles
-              const colorMap: Record<string, string> = {
-                sky: 'text-sky-600 bg-sky-50',
-                blue: 'text-blue-600 bg-blue-50',
-                green: 'text-green-600 bg-green-50',
-                red: 'text-red-500 bg-red-50',
-                yellow: 'text-yellow-500 bg-yellow-50',
-              };
-              const iconBg = colorMap[m.color] || 'text-slate-500 bg-slate-100';
-              const numberColor = colorMap[m.color]?.split(' ')[0] || 'text-slate-700';
-              return (
-                <div
-                  key={i}
-                  className={
-                    `flex flex-col items-center justify-center bg-gray-50 rounded-2xl shadow-sm border border-gray-200 p-5 min-h-[120px] transition-all duration-200 hover:shadow-md hover:bg-white`
-                  }
-                >
-                  <div className={`mb-2 rounded-full p-2 ${iconBg} text-3xl`}>{m.icon}</div>
-                  <div className="text-xs text-gray-500 font-medium text-center mb-1 tracking-wide uppercase">{m.label}</div>
-                  <div className={`text-3xl font-extrabold ${numberColor}`}>{apiData && apiData[m.key] !== undefined && apiData[m.key] !== null ? String(apiData[m.key]) : '0'}</div>
-                </div>
-              );
-            })}
+      {/* Panel central */}
+      <div className="flex-1 flex flex-col items-center justify-start w-full max-w-6xl mt-8">
+        <div className="w-full bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+          <div className="w-full flex items-center justify-between mb-8">
+            <h1 className="text-4xl font-extrabold text-blue-900 tracking-wide" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Dashboard Fresenius</h1>
+            <img src="/Logo_IA_Empresa.png" alt="IA Solutions Logo" className="max-h-10 w-auto ml-4 mr-2 mt-1" style={{ background: 'none', boxShadow: 'none', borderRadius: 0 }} />
           </div>
-          {/* Gráfica y paneles inferiores */}
-          <div className="grid grid-cols-3 gap-6 w-full max-w-6xl">
-            {/* Gráfica Call Monitor */}
-            <div className="col-span-2 bg-white rounded-xl shadow border border-blue-100 p-4 flex flex-col">
-              <div className="font-semibold text-lg text-gray-700 mb-2">Call Monitor</div>
-              <ResponsiveContainer width="100%" height={180}>
-                <LineChart data={callMonitorData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="active" stroke="#0284c7" strokeWidth={2} name="Active Calls" />
-                  <Line type="monotone" dataKey="onHold" stroke="#f43f5e" strokeWidth={2} name="On Hold" strokeDasharray="5 5" />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-            {/* Indicadores visuales */}
-            <div className="flex flex-col gap-6">
-              {/* Service Level */}
-              <div className="bg-white rounded-xl shadow border border-blue-100 p-4 flex flex-col items-center justify-center">
-                <div className="text-sm text-gray-500 font-medium mb-1">{String(serviceLevelLabel)}</div>
-                <FaExclamationTriangle className="text-yellow-400 text-3xl mb-1" />
-                <div className="text-3xl font-bold text-gray-700">{String(serviceLevel)}</div>
-                <div className="text-xs text-gray-400">% Answered Within SLA</div>
+          {loading && <p className="text-gray-500">Cargando datos...</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {!loading && !error && (
+            <>
+              {/* Tarjetas de métricas */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full mb-8">
+                {metricasDashboard.map((m, i) => {
+                  // Paleta de colores sutiles
+                  const colorMap: Record<string, string> = {
+                    sky: 'text-sky-600 bg-sky-50',
+                    blue: 'text-blue-600 bg-blue-50',
+                    green: 'text-green-600 bg-green-50',
+                    red: 'text-red-500 bg-red-50',
+                    yellow: 'text-yellow-500 bg-yellow-50',
+                  };
+                  const iconBg = colorMap[m.color] || 'text-slate-500 bg-slate-100';
+                  const numberColor = colorMap[m.color]?.split(' ')[0] || 'text-slate-700';
+                  return (
+                    <div
+                      key={i}
+                      className={
+                        `flex flex-col items-center justify-center bg-gray-50 rounded-2xl shadow-sm border border-gray-200 p-5 min-h-[120px] transition-all duration-200 hover:shadow-md hover:bg-white`
+                      }
+                    >
+                      <div className={`mb-2 rounded-full p-2 ${iconBg} text-3xl`}>{m.icon}</div>
+                      <div className="text-xs text-gray-500 font-medium text-center mb-1 tracking-wide uppercase">{m.label}</div>
+                      <div className={`text-3xl font-extrabold ${numberColor}`}>{apiData && apiData[m.key] !== undefined && apiData[m.key] !== null ? String(apiData[m.key]) : '0'}</div>
+                    </div>
+                  );
+                })}
               </div>
-              {/* Velocímetro (gauge) */}
-              <div className="bg-white rounded-xl shadow border border-blue-100 p-4 flex flex-col items-center justify-center">
-                <div className="text-sm text-gray-500 font-medium mb-1">Currently Active & Waiting</div>
-                {/* Simulación de velocímetro */}
-                <div className="relative w-28 h-14 flex items-end justify-center">
-                  <svg width="112" height="56" viewBox="0 0 112 56">
-                    <path d="M8,56 A48,48 0 0,1 104,56" fill="none" stroke="#e5e7eb" strokeWidth="10" />
-                    <path d="M8,56 A48,48 0 0,1 80,20" fill="none" stroke="#22c55e" strokeWidth="10" />
-                  </svg>
-                  <div className="absolute left-0 right-0 bottom-2 flex justify-between px-2 text-xs text-gray-400">
-                    <span>0</span>
-                    <span>100</span>
+              {/* Gráfica y paneles inferiores */}
+              <div className="grid grid-cols-3 gap-6 w-full">
+                {/* Gráfica Call Monitor */}
+                <div className="col-span-2 bg-white rounded-xl shadow border border-blue-100 p-4 flex flex-col">
+                  <div className="font-semibold text-lg text-gray-700 mb-2">Call Monitor</div>
+                  <ResponsiveContainer width="100%" height={180}>
+                    <LineChart data={callMonitorData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Line type="monotone" dataKey="active" stroke="#0284c7" strokeWidth={2} name="Active Calls" />
+                      <Line type="monotone" dataKey="onHold" stroke="#f43f5e" strokeWidth={2} name="On Hold" strokeDasharray="5 5" />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                {/* Indicadores visuales */}
+                <div className="flex flex-col gap-6">
+                  {/* Service Level */}
+                  <div className="bg-white rounded-xl shadow border border-blue-100 p-4 flex flex-col items-center justify-center">
+                    <div className="text-sm text-gray-500 font-medium mb-1">{String(serviceLevelLabel)}</div>
+                    <FaExclamationTriangle className="text-yellow-400 text-3xl mb-1" />
+                    <div className="text-3xl font-bold text-gray-700">{String(serviceLevel)}</div>
+                    <div className="text-xs text-gray-400">% Answered Within SLA</div>
+                  </div>
+                  {/* Velocímetro (gauge) */}
+                  <div className="bg-white rounded-xl shadow border border-blue-100 p-4 flex flex-col items-center justify-center">
+                    <div className="text-sm text-gray-500 font-medium mb-1">Currently Active & Waiting</div>
+                    {/* Simulación de velocímetro */}
+                    <div className="relative w-28 h-14 flex items-end justify-center">
+                      <svg width="112" height="56" viewBox="0 0 112 56">
+                        <path d="M8,56 A48,48 0 0,1 104,56" fill="none" stroke="#e5e7eb" strokeWidth="10" />
+                        <path d="M8,56 A48,48 0 0,1 80,20" fill="none" stroke="#22c55e" strokeWidth="10" />
+                      </svg>
+                      <div className="absolute left-0 right-0 bottom-2 flex justify-between px-2 text-xs text-gray-400">
+                        <span>0</span>
+                        <span>100</span>
+                      </div>
+                    </div>
+                    <div className="text-xs text-gray-400">Waiting: {String(waiting)}</div>
+                    <div className="text-2xl font-bold text-green-600">Active: {String(active)}</div>
                   </div>
                 </div>
-                <div className="text-xs text-gray-400">Waiting: {String(waiting)}</div>
-                <div className="text-2xl font-bold text-green-600">Active: {String(active)}</div>
               </div>
-            </div>
-          </div>
-        </>
-      )}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
