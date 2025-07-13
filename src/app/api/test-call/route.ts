@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     console.log('DEBUG ELEVENLABS_API_KEY:', apiKey ? 'PRESENTE' : 'VACÍA');
 
     // --- Variables dinámicas para batch calling ---
-    let dynamicVariablesNormalizadas: Record<string, string | number | boolean> = {};
+    const dynamicVariablesNormalizadas: Record<string, string | number | boolean> = {};
     if (variables && typeof variables === 'object') {
       const permitidas = ['nombre_paciente', 'stock_teorico', 'fecha_envio', 'producto'];
       for (const [k, v] of Object.entries(variables)) {
