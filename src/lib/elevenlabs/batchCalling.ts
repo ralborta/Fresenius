@@ -11,10 +11,11 @@ interface BatchCallRequest {
   recipients: BatchCallRecipient[];
 }
 
+// Cambiar el tipo de BatchCallResponse para no usar 'any'
 interface BatchCallResponse {
   id: string;
   status: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export async function sendBatchCall(request: BatchCallRequest): Promise<BatchCallResponse> {
