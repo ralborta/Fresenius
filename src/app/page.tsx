@@ -78,7 +78,7 @@ export default function DashboardIsabela() {
                     <div
                       key={i}
                       className={
-                        `flex flex-col items-center justify-center bg-gray-50 rounded-2xl shadow-sm border border-gray-200 p-5 min-h-[120px] transition-all duration-200 hover:shadow-md hover:bg-white`
+                        `flex flex-col items-center justify-center bg-gray-50 rounded-2xl border border-gray-200 p-5 min-h-[120px] transition-all duration-200 hover:shadow-md hover:bg-white shadow-[0_8px_32px_0_rgba(139,92,246,0.15)]`
                       }
                     >
                       <div className={`mb-2 rounded-full p-2 ${iconBg} text-3xl`}>{m.icon}</div>
