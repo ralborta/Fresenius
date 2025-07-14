@@ -180,16 +180,11 @@ export default function LlamadasPage() {
           <table className="w-full">
             <thead>
               <tr className="bg-blue-50 text-blue-900">
-                <th className="px-4 py-2 font-semibold">ID</th>
-                <th className="px-4 py-2 font-semibold">Agente</th>
                 <th className="px-4 py-2 font-semibold">Paciente</th>
                 <th className="px-4 py-2 font-semibold">Producto</th>
                 <th className="px-4 py-2 font-semibold">Teléfono</th>
-                <th className="px-4 py-2 font-semibold">Estatus</th>
                 <th className="px-4 py-2 font-semibold">Fecha y hora</th>
-                <th className="px-4 py-2 font-semibold">Resultado</th>
                 <th className="px-4 py-2 font-semibold">Duración</th>
-                <th className="px-4 py-2 font-semibold">Mensajes</th>
               </tr>
             </thead>
             <tbody>
@@ -200,12 +195,6 @@ export default function LlamadasPage() {
                   onClick={() => handleRowClick(conversation)}
                 >
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {conversation.conversation_id?.slice(-8) || 'N/A'}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-900">
-                    {conversation.agent_name || 'N/A'}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-900">
                     {conversation.nombre_paciente === 'Leonardo Viano' ? 'Leonardo' : (conversation.nombre_paciente || 'N/A')}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
@@ -214,24 +203,11 @@ export default function LlamadasPage() {
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {conversation.telefono_destino || 'N/A'}
                   </td>
-                  <td className="px-4 py-3 text-sm">
-                    <span className={getStatusColor(conversation.status || '')}>
-                      {conversation.status || 'N/A'}
-                    </span>
-                  </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {conversation.start_time_unix_secs ? formatDate(conversation.start_time_unix_secs) : 'N/A'}
                   </td>
-                  <td className="px-4 py-3 text-sm">
-                    <span className={getSuccessColor(conversation.call_successful || '')}>
-                      {conversation.call_successful || 'N/A'}
-                    </span>
-                  </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {conversation.call_duration_secs ? formatDuration(conversation.call_duration_secs) : 'N/A'}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-900">
-                    {conversation.message_count || 'N/A'}
                   </td>
                 </tr>
               ))}
