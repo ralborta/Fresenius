@@ -33,7 +33,6 @@ export default function LlamadasPage() {
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [conversationDetail, setConversationDetail] = useState<ConversationDetail | null>(null);
-  const [aviso, setAviso] = useState<string | null>(null);
 
   useEffect(() => {
     fetchConversations();
@@ -48,7 +47,6 @@ export default function LlamadasPage() {
       }
       const data = await response.json();
       setConversations(data.conversations || []);
-      setAviso(data.aviso || null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {
