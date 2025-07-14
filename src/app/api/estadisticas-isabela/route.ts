@@ -15,21 +15,12 @@ interface Conversation {
   producto?: string;
 }
 
-// Función para traducir texto usando LibreTranslate
+// Función para traducir texto usando MyMemory
 async function traducirTexto(texto: string): Promise<string> {
   try {
-    const res = await fetch("https://libretranslate.de/translate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        q: texto,
-        source: "en",
-        target: "es",
-        format: "text"
-      })
-    });
+    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=en|es`);
     const data = await res.json();
-    return data.translatedText || texto;
+    return data.responseData.translatedText || texto;
   } catch {
     return texto;
   }
