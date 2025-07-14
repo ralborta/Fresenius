@@ -79,8 +79,10 @@ export async function GET() {
       })
     );
 
-    // Limitar a las últimas 35 llamadas
-    const last35Conversations = detailedConversations.slice(-35);
+    // Ordenar por fecha de más reciente a más antigua
+    detailedConversations.sort((a, b) => (b.start_time_unix_secs || 0) - (a.start_time_unix_secs || 0));
+    // Tomar las primeras 35
+    const last35Conversations = detailedConversations.slice(0, 35);
     const total_calls = last35Conversations.length;
     const total_minutes = Math.round(last35Conversations.reduce((acc: number, c: Conversation) => acc + (c.call_duration_secs || 0), 0) / 60);
 
