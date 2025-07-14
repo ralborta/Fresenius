@@ -12,6 +12,9 @@ interface Conversation {
   status?: string;
   call_successful?: string;
   summary?: string;
+}
+
+interface ConversationDetail {
   telefono_destino?: string;
   nombre_paciente?: string;
   producto?: string;
@@ -25,172 +28,272 @@ export default function LlamadasPage() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [loadingSummary, setLoadingSummary] = useState(false);
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [conversationDetail, setConversationDetail] = useState<ConversationDetail | null>(null);
 
   useEffect(() => {
-    fetch("/api/estadisticas-isabela")
-      .then((res) => res.json())
-      .then((data) => {
-        setConversations(Array.isArray(data.conversations) ? data.conversations : []);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Error al cargar las llamadas");
-        setLoading(false);
-      });
+    fetchConversations();
   }, []);
 
-  // Paginación
+  const fetchConversations = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/estadisticas-isabela');
+      if (!response.ok) {
+        throw new Error('Error al cargar las conversaciones');
+      }
+      const data = await response.json();
+      setConversations(data.conversations || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error desconocido');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchConversationDetail = async (conversationId: string) => {
+    try {
+      setDetailLoading(true);
+      const response = await fetch(`/api/llamada-detalle/${conversationId}`);
+      if (!response.ok) {
+        throw new Error('Error al cargar los detalles');
+      }
+      const data = await response.json();
+      
+      // Extraer los datos de los campos correctos
+      const telefono_destino = data.metadata?.phone_call?.external_number || 
+                              data.conversation_initiation_client_data?.dynamic_variables?.system__called_number || 
+                              'No disponible';
+      
+      let nombre_paciente = data.conversation_initiation_client_data?.dynamic_variables?.nombre_paciente || 
+                           'No disponible';
+      
+      // Si el nombre es exactamente "Leonardo Viano", mostrar solo "Leonardo"
+      if (nombre_paciente === 'Leonardo Viano') {
+        nombre_paciente = 'Leonardo';
+      }
+      
+      const producto = data.conversation_initiation_client_data?.dynamic_variables?.producto || 
+                      'No disponible';
+
+      setConversationDetail({
+        telefono_destino,
+        nombre_paciente,
+        producto
+      });
+    } catch (err) {
+      console.error('Error al cargar detalles:', err);
+      setConversationDetail({
+        telefono_destino: 'Error al cargar',
+        nombre_paciente: 'Error al cargar',
+        producto: 'Error al cargar'
+      });
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+
+  const handleRowClick = async (conversation: Conversation) => {
+    setSelectedConversationId(conversation.conversation_id || null);
+    setSelectedSummary(conversation.summary || null);
+    
+    if (conversation.conversation_id) {
+      await fetchConversationDetail(conversation.conversation_id);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedSummary(null);
+    setSelectedConversationId(null);
+    setConversationDetail(null);
+  };
+
+  const formatDate = (timestamp: number) => {
+    return new Date(timestamp * 1000).toLocaleString('es-ES');
+  };
+
+  const formatDuration = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return 'text-green-600';
+      case 'failed': return 'text-red-600';
+      default: return 'text-gray-600';
+    }
+  };
+
+  const getSuccessColor = (success: string) => {
+    switch (success) {
+      case 'success': return 'text-green-600';
+      case 'failed': return 'text-red-600';
+      default: return 'text-yellow-600';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Cargando llamadas...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Error: {error}</p>
+          <button 
+            onClick={fetchConversations}
+            className="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-800"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+  const paginatedConversations = conversations.slice(startIndex, endIndex);
   const totalPages = Math.ceil(conversations.length / PAGE_SIZE);
-  const paginatedConversations = conversations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-gray-50 p-0">
       <div className="w-full flex justify-center mb-8 mt-8">
         <div className="flex items-center justify-center bg-white rounded-2xl shadow-lg px-8 py-4 border border-gray-200 max-w-2xl w-full">
-          <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide text-center w-full" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>
-            Listado de Llamadas
-          </h1>
+          <h1 className="text-3xl font-extrabold text-blue-900 tracking-wide text-center w-full" style={{ fontFamily: 'var(--font-geist-sans), Inter, Montserrat, Poppins, Arial, sans-serif' }}>Listado de Llamadas</h1>
         </div>
       </div>
-      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 border border-gray-200">
-        {loading && <p className="text-gray-500">Cargando llamadas...</p>}
-        {error && <p className="text-red-500">{error}</p>}
-        <div className={`${showModal ? 'filter blur-sm pointer-events-none select-none' : ''} w-full flex flex-col items-center`}>
-          {conversations.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm text-left">
-                <thead>
-                  <tr className="bg-blue-50 text-blue-900">
-                    <th className="px-4 py-2 font-semibold">ID</th>
-                    <th className="px-4 py-2 font-semibold">Agente</th>
-                    <th className="px-4 py-2 font-semibold">Paciente</th>
-                    <th className="px-4 py-2 font-semibold">Producto</th>
-                    <th className="px-4 py-2 font-semibold">Teléfono</th>
-                    <th className="px-4 py-2 font-semibold">Estatus</th>
-                    <th className="px-4 py-2 font-semibold">Fecha y hora</th>
-                    <th className="px-4 py-2 font-semibold">Resultado</th>
-                    <th className="px-4 py-2 font-semibold">Duración</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedConversations.map((c, idx) => {
-                    // ID correlativo global
-                    const globalIdx = (page - 1) * PAGE_SIZE + idx + 1;
-                    const correlativo = `Nt-${globalIdx.toString().padStart(3, '0')}`;
-                    // Fecha legible
-                    const fecha = c.start_time_unix_secs ? new Date(Number(c.start_time_unix_secs) * 1000) : null;
-                    const fechaStr = fecha ? fecha.toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' }) : '-';
-                    // Duración en mm:ss
-                    const dur = c.call_duration_secs || 0;
-                    const min = Math.floor(dur / 60);
-                    const seg = dur % 60;
-                    const duracionStr = `${min}:${seg.toString().padStart(2, '0')}`;
-                    return (
-                      <tr
-                        key={c.conversation_id || idx}
-                        className={idx % 2 === 0 ? "bg-white cursor-pointer" : "bg-blue-50/60 cursor-pointer"}
-                        onClick={async () => {
-                          setShowModal(true);
-                          setSelectedSummary(null);
-                          setLoadingSummary(true);
-                          try {
-                            const res = await fetch(`/api/llamada-detalle/${c.conversation_id}`);
-                            const data = await res.json();
-                            // Buscar el resumen en analysis.transcript_summary
-                            const resumen = data.analysis?.transcript_summary || data.summary || data.call_summary || data.overview || data.description || null;
-                            if (resumen && resumen.trim()) {
-                              // Traducir automáticamente al español usando MyMemory
-                              try {
-                                const tradRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(resumen)}&langpair=en|es`);
-                                const tradData = await tradRes.json();
-                                if (tradData.responseData && tradData.responseData.translatedText) {
-                                  setSelectedSummary(tradData.responseData.translatedText);
-                                } else {
-                                  setSelectedSummary('No se pudo traducir el resumen');
-                                }
-                              } catch {
-                                setSelectedSummary('No se pudo traducir el resumen');
-                              }
-                            } else {
-                              setSelectedSummary(null);
-                            }
-                          } catch {
-                            setSelectedSummary(null);
-                          }
-                          setLoadingSummary(false);
-                        }}
-                      >
-                        <td className="px-4 py-2 text-gray-700 font-mono">{correlativo}</td>
-                        <td className="px-4 py-2 text-gray-700">{c.agent_name || '-'}</td>
-                        <td className="px-4 py-2 text-gray-700">{c.nombre_paciente || '-'}</td>
-                        <td className="px-4 py-2 text-gray-700">{c.producto || '-'}</td>
-                        <td className="px-4 py-2 text-gray-700">{c.telefono_destino || '-'}</td>
-                        <td className="px-4 py-2 text-gray-700">{c.status || '-'}</td>
-                        <td className="px-4 py-2 text-gray-700">{fechaStr}</td>
-                        <td className="px-4 py-2 text-gray-700">{c.call_successful || '-'}</td>
-                        <td className="px-4 py-2 text-gray-700">{duracionStr}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            !loading && <p className="text-gray-400">No hay llamadas registradas.</p>
-          )}
-          {/* Paginación */}
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-6">
-              <button
-                className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold disabled:opacity-50"
-                onClick={() => setPage(page - 1)}
-                disabled={page === 1}
-              >Anterior</button>
-              {Array.from({ length: totalPages }, (_, i) => (
-                <button
-                  key={i}
-                  className={`px-3 py-1 rounded font-semibold ${page === i + 1 ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-700 hover:bg-blue-200'}`}
-                  onClick={() => setPage(i + 1)}
-                >{i + 1}</button>
+
+      <div className="w-full max-w-7xl bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 border border-gray-200">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-blue-50 text-blue-900">
+                <th className="px-4 py-2 font-semibold">ID</th>
+                <th className="px-4 py-2 font-semibold">Agente</th>
+                <th className="px-4 py-2 font-semibold">Estatus</th>
+                <th className="px-4 py-2 font-semibold">Fecha y hora</th>
+                <th className="px-4 py-2 font-semibold">Resultado</th>
+                <th className="px-4 py-2 font-semibold">Duración</th>
+                <th className="px-4 py-2 font-semibold">Mensajes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedConversations.map((conversation, index) => (
+                <tr 
+                  key={conversation.conversation_id || index}
+                  className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors"
+                  onClick={() => handleRowClick(conversation)}
+                >
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {conversation.conversation_id?.slice(-8) || 'N/A'}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {conversation.agent_name || 'N/A'}
+                  </td>
+                  <td className="px-4 py-3 text-sm">
+                    <span className={getStatusColor(conversation.status || '')}>
+                      {conversation.status || 'N/A'}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {conversation.start_time_unix_secs ? formatDate(conversation.start_time_unix_secs) : 'N/A'}
+                  </td>
+                  <td className="px-4 py-3 text-sm">
+                    <span className={getSuccessColor(conversation.call_successful || '')}>
+                      {conversation.call_successful || 'N/A'}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {conversation.call_duration_secs ? formatDuration(conversation.call_duration_secs) : 'N/A'}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {conversation.message_count || 'N/A'}
+                  </td>
+                </tr>
               ))}
-              <button
-                className="px-3 py-1 rounded bg-blue-100 text-blue-700 font-semibold disabled:opacity-50"
-                onClick={() => setPage(page + 1)}
-                disabled={page === totalPages}
-              >Siguiente</button>
-            </div>
-          )}
+            </tbody>
+          </table>
         </div>
-      </div>
-      {/* Modal para mostrar el resumen de la llamada */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm transition-opacity duration-200">
-          <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-5 relative animate-fade-in-up flex flex-col items-center border border-blue-100">
+
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-6 space-x-2">
             <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-blue-700 text-xl font-bold focus:outline-none"
-              onClick={() => setShowModal(false)}
-              aria-label="Cerrar"
+              onClick={() => setPage(Math.max(1, page - 1))}
+              disabled={page === 1}
+              className="px-3 py-1 bg-blue-900 text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-800"
             >
-              ×
+              Anterior
             </button>
-            <h2 className="text-xl font-bold mb-3 text-blue-900 w-full text-left">Resumen de la llamada</h2>
-            <div className="text-gray-700 whitespace-pre-line w-full min-h-[40px] text-base mb-3">
-              {loadingSummary ? (
-                <span className="italic text-gray-400">Generando análisis IA Services...</span>
-              ) : selectedSummary ? (
-                selectedSummary
-              ) : (
-                <span className="italic text-gray-400">Sin resumen disponible</span>
-              )}
-            </div>
-            <div className="mt-4 flex justify-end w-full">
+            <span className="px-3 py-1 text-gray-700">
+              Página {page} de {totalPages}
+            </span>
+            <button
+              onClick={() => setPage(Math.min(totalPages, page + 1))}
+              disabled={page === totalPages}
+              className="px-3 py-1 bg-blue-900 text-white rounded disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-800"
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Modal para mostrar detalles */}
+      {selectedSummary !== null && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-blue-900">Detalles de la Llamada</h2>
               <button
-                className="px-5 py-1.5 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition text-base"
-                onClick={() => setShowModal(false)}
-              >Cerrar</button>
+                onClick={closeModal}
+                className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+              >
+                ×
+              </button>
             </div>
+
+            {detailLoading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-900 mx-auto"></div>
+                <p className="mt-2 text-gray-600">Cargando detalles...</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {conversationDetail && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <h3 className="font-semibold text-gray-700 mb-2">Paciente</h3>
+                      <p className="text-gray-900">{conversationDetail.nombre_paciente}</p>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <h3 className="font-semibold text-gray-700 mb-2">Producto</h3>
+                      <p className="text-gray-900">{conversationDetail.producto}</p>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-lg md:col-span-2">
+                      <h3 className="font-semibold text-gray-700 mb-2">Teléfono</h3>
+                      <p className="text-gray-900">{conversationDetail.telefono_destino}</p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-700 mb-2">Resumen de la Llamada</h3>
+                  <p className="text-gray-900 whitespace-pre-wrap">{selectedSummary}</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
