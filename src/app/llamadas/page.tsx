@@ -40,12 +40,12 @@ async function traducirTexto(texto: string): Promise<string> {
     const data = await res.json();
     if (!data.translatedText) {
       console.error('Respuesta de traducción inesperada:', data);
-      return '[Error al traducir: respuesta inesperada] ' + texto;
+      return texto; // Solo devuelve el texto original
     }
     return data.translatedText;
   } catch (e) {
     console.error('Error al traducir:', e);
-    return '[Error al traducir] ' + texto;
+    return texto; // Solo devuelve el texto original
   }
 }
 
@@ -290,17 +290,17 @@ export default function LlamadasPage() {
               <div className="space-y-4">
                 {conversationDetail && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-700 mb-2">Paciente</h3>
-                      <p className="text-gray-900">{conversationDetail.nombre_paciente}</p>
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                      <h3 className="font-semibold text-blue-800 mb-2">Paciente</h3>
+                      <p className="text-blue-900">{conversationDetail.nombre_paciente}</p>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h3 className="font-semibold text-gray-700 mb-2">Producto</h3>
-                      <p className="text-gray-900">{conversationDetail.producto}</p>
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+                      <h3 className="font-semibold text-green-800 mb-2">Producto</h3>
+                      <p className="text-green-900">{conversationDetail.producto}</p>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded-lg md:col-span-2">
-                      <h3 className="font-semibold text-gray-700 mb-2">Teléfono</h3>
-                      <p className="text-gray-900">{conversationDetail.telefono_destino}</p>
+                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100 md:col-span-2">
+                      <h3 className="font-semibold text-yellow-800 mb-2">Teléfono</h3>
+                      <p className="text-yellow-900">{conversationDetail.telefono_destino}</p>
                     </div>
                   </div>
                 )}
