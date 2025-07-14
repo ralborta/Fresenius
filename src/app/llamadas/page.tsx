@@ -295,7 +295,11 @@ export default function LlamadasPage() {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-gray-700 mb-2">Resumen de la Llamada</h3>
                   <p className="text-gray-900 whitespace-pre-wrap">
-                    {translatedSummary !== null ? translatedSummary : selectedSummary}
+                    {translatedSummary !== null
+                      ? translatedSummary
+                      : selectedSummary
+                        ? selectedSummary
+                        : 'No hay resumen disponible para esta llamada.'}
                   </p>
                   {selectedSummary && !translatedSummary && (
                     <button
