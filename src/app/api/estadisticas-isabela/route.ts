@@ -24,7 +24,7 @@ async function traducirTexto(texto: string): Promise<string> {
     if (result.text && result.text !== texto) {
       return result.text;
     }
-  } catch (error) {
+  } catch {
     console.log('Google Translate falló, probando siguiente opción...');
   }
 
@@ -44,7 +44,7 @@ async function traducirTexto(texto: string): Promise<string> {
     if (data.translatedText && data.translatedText !== texto) {
       return data.translatedText;
     }
-  } catch (error) {
+  } catch {
     console.log('Free Translate API falló, probando siguiente opción...');
   }
 
@@ -64,7 +64,7 @@ async function traducirTexto(texto: string): Promise<string> {
     if (data.translatedText && data.translatedText !== texto) {
       return data.translatedText;
     }
-  } catch (error) {
+  } catch {
     console.log('LibreTranslate falló, probando siguiente opción...');
   }
 
@@ -82,7 +82,7 @@ async function traducirTexto(texto: string): Promise<string> {
     if (data.responseData?.translatedText && data.responseData.translatedText !== texto) {
       return data.responseData.translatedText;
     }
-  } catch (error) {
+  } catch {
     console.log('Todas las APIs de traducción fallaron, devolviendo texto original');
   }
 
