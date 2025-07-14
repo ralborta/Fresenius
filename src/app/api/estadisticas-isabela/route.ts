@@ -15,6 +15,18 @@ interface Conversation {
   producto?: string;
 }
 
+interface RawConversation {
+  metadata?: { phone_call?: { external_number?: string } };
+  conversation_initiation_client_data?: {
+    dynamic_variables?: {
+      nombre_paciente?: string;
+      producto?: string;
+      system__called_number?: string;
+    };
+  };
+  [key: string]: unknown;
+}
+
 export async function GET() {
   const API_KEY = process.env.ELEVENLABS_API_KEY || 'YOUR_API_KEY';
   const AGENT_ID = 'agent_01jyqdepnrf1x9wfrt9kkyy84t';
@@ -33,17 +45,16 @@ export async function GET() {
       return NextResponse.json({ error: 'Error al obtener conversaciones', status: res.status, body: text }, { status: res.status });
     }
     const data = await res.json();
-    const conversations: Conversation[] = (data.conversations || []).map((conv: unknown) => {
-      const c = conv as Record<string, any>;
-      let nombre_paciente = c.conversation_initiation_client_data?.dynamic_variables?.nombre_paciente || null;
+    const conversations: Conversation[] = (data.conversations || []).map((conv: RawConversation) => {
+      let nombre_paciente = conv.conversation_initiation_client_data?.dynamic_variables?.nombre_paciente || null;
       if (nombre_paciente === 'Leonardo Viano') {
         nombre_paciente = 'Leonardo';
       }
       return {
-        ...c,
-        telefono_destino: c.metadata?.phone_call?.external_number || c.conversation_initiation_client_data?.dynamic_variables?.system__called_number || null,
+        ...conv,
+        telefono_destino: conv.metadata?.phone_call?.external_number || conv.conversation_initiation_client_data?.dynamic_variables?.system__called_number || null,
         nombre_paciente,
-        producto: c.conversation_initiation_client_data?.dynamic_variables?.producto || null,
+        producto: conv.conversation_initiation_client_data?.dynamic_variables?.producto || null,
       };
     });
     const total_calls = conversations.length;
