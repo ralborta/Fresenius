@@ -54,8 +54,6 @@ export default function LlamadasPage() {
   const [conversationDetail, setConversationDetail] = useState<ConversationDetail | null>(null);
   const [translatedSummary, setTranslatedSummary] = useState<string | null>(null);
   const [translating, setTranslating] = useState(false);
-  // Estado para controlar si se debe mostrar el resumen traducido
-  const [showTranslated, setShowTranslated] = useState(false);
 
   useEffect(() => {
     fetchConversations();
@@ -76,7 +74,6 @@ export default function LlamadasPage() {
 
   // useEffect para limpiar el estado al abrir/cerrar modal
   useEffect(() => {
-    setShowTranslated(false);
     setTranslatedSummary(null);
   }, [selectedSummary]);
 
@@ -161,17 +158,6 @@ export default function LlamadasPage() {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
-  // Función para traducir al hacer clic en el botón
-  const handleTranslate = async () => {
-    if (selectedSummary) {
-      setTranslating(true);
-      const traducido = await traducirTexto(selectedSummary);
-      setTranslatedSummary(traducido);
-      setShowTranslated(true);
-      setTranslating(false);
-    }
   };
 
   if (loading) {
