@@ -33,16 +33,17 @@ export async function GET() {
       return NextResponse.json({ error: 'Error al obtener conversaciones', status: res.status, body: text }, { status: res.status });
     }
     const data = await res.json();
-    const conversations: Conversation[] = (data.conversations || []).map((conv) => {
-      let nombre_paciente = conv.conversation_initiation_client_data?.dynamic_variables?.nombre_paciente || null;
+    const conversations: Conversation[] = (data.conversations || []).map((conv: unknown) => {
+      const c = conv as Record<string, any>;
+      let nombre_paciente = c.conversation_initiation_client_data?.dynamic_variables?.nombre_paciente || null;
       if (nombre_paciente === 'Leonardo Viano') {
         nombre_paciente = 'Leonardo';
       }
       return {
-        ...conv,
-        telefono_destino: conv.metadata?.phone_call?.external_number || conv.conversation_initiation_client_data?.dynamic_variables?.system__called_number || null,
+        ...c,
+        telefono_destino: c.metadata?.phone_call?.external_number || c.conversation_initiation_client_data?.dynamic_variables?.system__called_number || null,
         nombre_paciente,
-        producto: conv.conversation_initiation_client_data?.dynamic_variables?.producto || null,
+        producto: c.conversation_initiation_client_data?.dynamic_variables?.producto || null,
       };
     });
     const total_calls = conversations.length;
