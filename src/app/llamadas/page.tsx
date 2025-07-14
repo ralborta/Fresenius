@@ -27,7 +27,7 @@ const PAGE_SIZE = 10;
 
 async function traducirTexto(texto: string): Promise<string> {
   try {
-    const res = await fetch("https://libretranslate.de/translate", {
+    const res = await fetch("https://translate.argosopentech.com/translate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
