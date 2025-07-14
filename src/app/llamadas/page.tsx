@@ -33,6 +33,7 @@ export default function LlamadasPage() {
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [conversationDetail, setConversationDetail] = useState<ConversationDetail | null>(null);
+  const [aviso, setAviso] = useState<string | null>(null);
 
   useEffect(() => {
     fetchConversations();
@@ -47,6 +48,7 @@ export default function LlamadasPage() {
       }
       const data = await response.json();
       setConversations(data.conversations || []);
+      setAviso(data.aviso || null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {
@@ -160,6 +162,11 @@ export default function LlamadasPage() {
       </div>
 
       <div className="w-full max-w-7xl bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 border border-gray-200">
+        {aviso && (
+          <div className="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">
+            {aviso}
+          </div>
+        )}
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
