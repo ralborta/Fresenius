@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import translate from 'google-translate-api-x';
 
 interface Conversation {
   agent_id?: string;
@@ -15,9 +16,19 @@ interface Conversation {
   producto?: string;
 }
 
-// Función de traducción con fallback: Free Translate API -> LibreTranslate -> Apertium
+// Función de traducción con Google Translate gratuito como primera opción
 async function traducirTexto(texto: string): Promise<string> {
-  // 1. Free Translate API (Ismal Zikri)
+  // 1. Google Translate (gratuito)
+  try {
+    const result = await translate(texto, { from: 'en', to: 'es' });
+    if (result.text && result.text !== texto) {
+      return result.text;
+    }
+  } catch (error) {
+    console.log('Google Translate falló, probando siguiente opción...');
+  }
+
+  // 2. Free Translate API (Ismal Zikri)
   try {
     const res = await fetch('https://translate.ismailzikri.com/translate', {
       method: 'POST',
@@ -33,9 +44,11 @@ async function traducirTexto(texto: string): Promise<string> {
     if (data.translatedText && data.translatedText !== texto) {
       return data.translatedText;
     }
-  } catch {}
+  } catch (error) {
+    console.log('Free Translate API falló, probando siguiente opción...');
+  }
 
-  // 2. LibreTranslate
+  // 3. LibreTranslate
   try {
     const res = await fetch('https://libretranslate.com/translate', {
       method: 'POST',
@@ -51,9 +64,11 @@ async function traducirTexto(texto: string): Promise<string> {
     if (data.translatedText && data.translatedText !== texto) {
       return data.translatedText;
     }
-  } catch {}
+  } catch (error) {
+    console.log('LibreTranslate falló, probando siguiente opción...');
+  }
 
-  // 3. Apertium
+  // 4. Apertium (último recurso)
   try {
     const res = await fetch('https://apertium.org/apy/translate', {
       method: 'POST',
@@ -67,9 +82,10 @@ async function traducirTexto(texto: string): Promise<string> {
     if (data.responseData?.translatedText && data.responseData.translatedText !== texto) {
       return data.responseData.translatedText;
     }
-  } catch {}
+  } catch (error) {
+    console.log('Todas las APIs de traducción fallaron, devolviendo texto original');
+  }
 
-  // Si todas fallan, devuelve el texto original
   return texto;
 }
 

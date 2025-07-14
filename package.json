@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "apexcharts": "^4.7.0",
+    "google-translate-api-x": "^10.7.2",
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-apexcharts": "^1.7.0",
