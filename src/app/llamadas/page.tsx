@@ -27,7 +27,7 @@ const PAGE_SIZE = 10;
 
 async function traducirTexto(texto: string): Promise<string> {
   try {
-    const res = await fetch("https://translate.argosopentech.com/translate", {
+    const res = await fetch("https://libretranslate.com/translate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -61,6 +61,7 @@ export default function LlamadasPage() {
     fetchConversations();
   }, []);
 
+  // useEffect para traducir automáticamente al abrir el modal
   useEffect(() => {
     if (selectedSummary) {
       setTranslating(true);
@@ -316,19 +317,8 @@ export default function LlamadasPage() {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-gray-700 mb-2">Resumen de la Llamada</h3>
                   <p className="text-gray-900 whitespace-pre-wrap">
-                    {showTranslated
-                      ? translatedSummary
-                      : selectedSummary || 'No hay resumen disponible para esta llamada.'}
+                    {translating ? 'Traduciendo...' : translatedSummary || selectedSummary || 'No hay resumen disponible para esta llamada.'}
                   </p>
-                  {!showTranslated && selectedSummary && (
-                    <button
-                      onClick={handleTranslate}
-                      className="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-800"
-                      disabled={translating}
-                    >
-                      {translating ? 'Traduciendo...' : 'Aceptar'}
-                    </button>
-                  )}
                 </div>
               </div>
             )}
