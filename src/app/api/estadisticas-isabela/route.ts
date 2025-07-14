@@ -15,8 +15,9 @@ interface Conversation {
   producto?: string;
 }
 
-// Función para traducir texto usando Free Translate API de Ismal Zikri
+// Función de traducción con fallback: Free Translate API -> LibreTranslate -> Apertium
 async function traducirTexto(texto: string): Promise<string> {
+  // 1. Free Translate API (Ismal Zikri)
   try {
     const res = await fetch('https://translate.ismailzikri.com/translate', {
       method: 'POST',
@@ -29,10 +30,47 @@ async function traducirTexto(texto: string): Promise<string> {
       })
     });
     const data = await res.json();
-    return data.translatedText || texto;
-  } catch {
-    return texto;
-  }
+    if (data.translatedText && data.translatedText !== texto) {
+      return data.translatedText;
+    }
+  } catch {}
+
+  // 2. LibreTranslate
+  try {
+    const res = await fetch('https://libretranslate.com/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        q: texto,
+        source: 'en',
+        target: 'es',
+        format: 'text'
+      })
+    });
+    const data = await res.json();
+    if (data.translatedText && data.translatedText !== texto) {
+      return data.translatedText;
+    }
+  } catch {}
+
+  // 3. Apertium
+  try {
+    const res = await fetch('https://apertium.org/apy/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        q: texto,
+        langpair: 'en|es'
+      })
+    });
+    const data = await res.json();
+    if (data.responseData?.translatedText && data.responseData.translatedText !== texto) {
+      return data.responseData.translatedText;
+    }
+  } catch {}
+
+  // Si todas fallan, devuelve el texto original
+  return texto;
 }
 
 export async function GET() {
