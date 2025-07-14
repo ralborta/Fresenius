@@ -10,6 +10,9 @@ interface Conversation {
   status?: string;
   call_successful?: string;
   summary?: string;
+  telefono_destino?: string;
+  nombre_paciente?: string;
+  producto?: string;
 }
 
 export async function GET() {
@@ -17,31 +20,70 @@ export async function GET() {
   const AGENT_ID = 'agent_01jyqdepnrf1x9wfrt9kkyy84t';
 
   try {
-    // Solo traer la primera página para el conteo rápido (máximo 100 llamadas)
-    const url = `https://api.elevenlabs.io/v1/convai/conversations?agent_id=${AGENT_ID}&page_size=100`;
-    
-    const res = await fetch(url, {
-      headers: {
-        'xi-api-key': API_KEY,
-        'Content-Type': 'application/json',
-      },
-    });
+    let allConversations: Conversation[] = [];
+    let hasMore = true;
+    let nextPageToken: string | null = null;
+    const PAGE_SIZE = 100;
 
-    if (!res.ok) {
-      const text = await res.text();
-      return NextResponse.json({ error: 'Error al obtener conversaciones', status: res.status, body: text }, { status: res.status });
+    while (hasMore) {
+      let url = `https://api.elevenlabs.io/v1/convai/conversations?agent_id=${AGENT_ID}&page_size=${PAGE_SIZE}`;
+      if (nextPageToken) {
+        url += `&page_token=${nextPageToken}`;
+      }
+      const res = await fetch(url, {
+        headers: {
+          'xi-api-key': API_KEY,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        return NextResponse.json({ error: 'Error al obtener conversaciones', status: res.status, body: text }, { status: res.status });
+      }
+      const data = await res.json();
+      const conversations = data.conversations || [];
+      allConversations = allConversations.concat(conversations);
+      if (data.next_page_token) {
+        nextPageToken = data.next_page_token;
+        hasMore = true;
+      } else {
+        hasMore = false;
+      }
     }
 
-    const data = await res.json();
-    const conversations: Conversation[] = data.conversations || [];
+    // Por cada conversación, obtener el detalle y extraer los datos requeridos
+    const detailedConversations: Conversation[] = await Promise.all(
+      allConversations.map(async (conv) => {
+        try {
+          const res = await fetch(`https://api.elevenlabs.io/v1/convai/conversations/${conv.conversation_id}`, {
+            headers: {
+              'xi-api-key': API_KEY,
+              'Content-Type': 'application/json',
+            },
+          });
+          if (!res.ok) return conv;
+          const data = await res.json();
+          let nombre_paciente = data.conversation_initiation_client_data?.dynamic_variables?.nombre_paciente || null;
+          if (nombre_paciente === 'Leonardo Viano') {
+            nombre_paciente = 'Leonardo';
+          }
+          return {
+            ...conv,
+            telefono_destino: data.metadata?.phone_call?.external_number || data.conversation_initiation_client_data?.dynamic_variables?.system__called_number || null,
+            nombre_paciente,
+            producto: data.conversation_initiation_client_data?.dynamic_variables?.producto || null,
+          };
+        } catch {
+          return conv;
+        }
+      })
+    );
 
-    // Calcular totales solo con las llamadas de la primera página
-    const total_calls = conversations.length;
-    const total_minutes = Math.round(conversations.reduce((sum, conv) => sum + (conv.call_duration_secs || 0), 0) / 60);
-    
-    const exitosas = conversations.filter(conv => conv.call_successful === 'success').length;
-    const fallidas = conversations.filter(conv => conv.call_successful === 'failed').length;
-    const desconocidas = conversations.filter(conv => conv.call_successful !== 'success' && conv.call_successful !== 'failed').length;
+    const total_calls = detailedConversations.length;
+    const total_minutes = Math.round(detailedConversations.reduce((acc: number, c: Conversation) => acc + (c.call_duration_secs || 0), 0) / 60);
+    const exitosas = detailedConversations.filter((c: Conversation) => c.call_successful === 'success').length;
+    const fallidas = detailedConversations.filter((c: Conversation) => c.call_successful === 'failed').length;
+    const desconocidas = detailedConversations.filter((c: Conversation) => c.call_successful !== 'success' && c.call_successful !== 'failed').length;
 
     return NextResponse.json({
       total_calls,
@@ -49,19 +91,8 @@ export async function GET() {
       exitosas,
       fallidas,
       desconocidas,
-      conversations: conversations.map(conv => ({
-        agent_id: conv.agent_id,
-        agent_name: conv.agent_name,
-        conversation_id: conv.conversation_id,
-        start_time_unix_secs: conv.start_time_unix_secs,
-        call_duration_secs: conv.call_duration_secs,
-        message_count: conv.message_count,
-        status: conv.status,
-        call_successful: conv.call_successful,
-        summary: conv.summary
-      }))
+      conversations: detailedConversations,
     });
-
   } catch (error) {
     console.error('Error en estadísticas:', error);
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });

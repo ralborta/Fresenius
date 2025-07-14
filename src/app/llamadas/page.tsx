@@ -12,6 +12,9 @@ interface Conversation {
   status?: string;
   call_successful?: string;
   summary?: string;
+  nombre_paciente?: string; // Added for patient name
+  telefono_destino?: string; // Added for phone number
+  producto?: string; // Added for product
 }
 
 interface ConversationDetail {
@@ -179,6 +182,9 @@ export default function LlamadasPage() {
               <tr className="bg-blue-50 text-blue-900">
                 <th className="px-4 py-2 font-semibold">ID</th>
                 <th className="px-4 py-2 font-semibold">Agente</th>
+                <th className="px-4 py-2 font-semibold">Paciente</th>
+                <th className="px-4 py-2 font-semibold">Producto</th>
+                <th className="px-4 py-2 font-semibold">Teléfono</th>
                 <th className="px-4 py-2 font-semibold">Estatus</th>
                 <th className="px-4 py-2 font-semibold">Fecha y hora</th>
                 <th className="px-4 py-2 font-semibold">Resultado</th>
@@ -198,6 +204,15 @@ export default function LlamadasPage() {
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {conversation.agent_name || 'N/A'}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {conversation.nombre_paciente === 'Leonardo Viano' ? 'Leonardo' : (conversation.nombre_paciente || 'N/A')}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {conversation.producto || 'N/A'}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {conversation.telefono_destino || 'N/A'}
                   </td>
                   <td className="px-4 py-3 text-sm">
                     <span className={getStatusColor(conversation.status || '')}>
