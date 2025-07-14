@@ -59,6 +59,18 @@ export default function LlamadasPage() {
     fetchConversations();
   }, []);
 
+  useEffect(() => {
+    if (selectedSummary) {
+      setTranslating(true);
+      traducirTexto(selectedSummary).then((res) => {
+        setTranslatedSummary(res);
+        setTranslating(false);
+      });
+    } else {
+      setTranslatedSummary(null);
+    }
+  }, [selectedSummary]);
+
   const fetchConversations = async () => {
     try {
       setLoading(true);
@@ -256,17 +268,16 @@ export default function LlamadasPage() {
 
       {/* Modal para mostrar detalles */}
       {selectedSummary !== null && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(139,92,246,0.15)] p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-blue-900">Detalles de la Llamada</h2>
-              <button
-                onClick={closeModal}
-                className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
-              >
-                ×
-              </button>
-            </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm">
+          <div className="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full relative">
+            <button
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold"
+              onClick={closeModal}
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+            <h2 className="text-2xl font-bold text-blue-900 mb-6">Detalles de la Llamada</h2>
 
             {detailLoading ? (
               <div className="text-center py-8">
@@ -295,21 +306,8 @@ export default function LlamadasPage() {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-gray-700 mb-2">Resumen de la Llamada</h3>
                   <p className="text-gray-900 whitespace-pre-wrap">
-                    {translatedSummary !== null
-                      ? translatedSummary
-                      : selectedSummary
-                        ? selectedSummary
-                        : 'No hay resumen disponible para esta llamada.'}
+                    {translating ? 'Traduciendo...' : translatedSummary || selectedSummary || 'No hay resumen disponible para esta llamada.'}
                   </p>
-                  {selectedSummary && !translatedSummary && (
-                    <button
-                      onClick={handleTranslate}
-                      className="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-800"
-                      disabled={translating}
-                    >
-                      {translating ? 'Traduciendo...' : 'Traducir al español'}
-                    </button>
-                  )}
                 </div>
               </div>
             )}
