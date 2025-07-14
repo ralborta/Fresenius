@@ -15,12 +15,21 @@ interface Conversation {
   producto?: string;
 }
 
-// Función para traducir texto usando MyMemory
+// Función para traducir texto usando Free Translate API de Ismal Zikri
 async function traducirTexto(texto: string): Promise<string> {
   try {
-    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=en|es`);
+    const res = await fetch('https://translate.ismailzikri.com/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        q: texto,
+        source: 'en',
+        target: 'es',
+        format: 'text'
+      })
+    });
     const data = await res.json();
-    return data.responseData.translatedText || texto;
+    return data.translatedText || texto;
   } catch {
     return texto;
   }
