@@ -119,22 +119,6 @@ export default function LlamadasPage() {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed': return 'text-green-600';
-      case 'failed': return 'text-red-600';
-      default: return 'text-gray-600';
-    }
-  };
-
-  const getSuccessColor = (success: string) => {
-    switch (success) {
-      case 'success': return 'text-green-600';
-      case 'failed': return 'text-red-600';
-      default: return 'text-yellow-600';
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
