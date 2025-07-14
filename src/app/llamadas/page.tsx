@@ -25,6 +25,25 @@ interface ConversationDetail {
 
 const PAGE_SIZE = 10;
 
+async function traducirTexto(texto: string): Promise<string> {
+  try {
+    const res = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        q: texto,
+        source: "en",
+        target: "es",
+        format: "text"
+      })
+    });
+    const data = await res.json();
+    return data.translatedText || texto;
+  } catch {
+    return texto;
+  }
+}
+
 export default function LlamadasPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +52,8 @@ export default function LlamadasPage() {
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [conversationDetail, setConversationDetail] = useState<ConversationDetail | null>(null);
+  const [translatedSummary, setTranslatedSummary] = useState<string | null>(null);
+  const [translating, setTranslating] = useState(false);
 
   useEffect(() => {
     fetchConversations();
@@ -96,8 +117,18 @@ export default function LlamadasPage() {
     }
   };
 
+  const handleTranslate = async () => {
+    if (selectedSummary) {
+      setTranslating(true);
+      const traducido = await traducirTexto(selectedSummary);
+      setTranslatedSummary(traducido);
+      setTranslating(false);
+    }
+  };
+
   const handleRowClick = async (conversation: Conversation) => {
     setSelectedSummary(conversation.summary || null);
+    setTranslatedSummary(null);
     
     if (conversation.conversation_id) {
       await fetchConversationDetail(conversation.conversation_id);
@@ -106,6 +137,7 @@ export default function LlamadasPage() {
 
   const closeModal = () => {
     setSelectedSummary(null);
+    setTranslatedSummary(null);
     setConversationDetail(null);
   };
 
@@ -262,7 +294,18 @@ export default function LlamadasPage() {
 
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-gray-700 mb-2">Resumen de la Llamada</h3>
-                  <p className="text-gray-900 whitespace-pre-wrap">{selectedSummary}</p>
+                  <p className="text-gray-900 whitespace-pre-wrap">
+                    {translatedSummary !== null ? translatedSummary : selectedSummary}
+                  </p>
+                  {selectedSummary && !translatedSummary && (
+                    <button
+                      onClick={handleTranslate}
+                      className="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-800"
+                      disabled={translating}
+                    >
+                      {translating ? 'Traduciendo...' : 'Traducir al español'}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
