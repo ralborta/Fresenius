@@ -129,15 +129,6 @@ export default function LlamadasPage() {
     }
   };
 
-  const handleTranslate = async () => {
-    if (selectedSummary) {
-      setTranslating(true);
-      const traducido = await traducirTexto(selectedSummary);
-      setTranslatedSummary(traducido);
-      setTranslating(false);
-    }
-  };
-
   const handleRowClick = async (conversation: Conversation) => {
     setSelectedSummary(conversation.summary || null);
     setTranslatedSummary(null);
