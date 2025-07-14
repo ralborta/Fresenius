@@ -72,7 +72,7 @@ export async function GET() {
             telefono_destino: data.metadata?.phone_call?.external_number || data.conversation_initiation_client_data?.dynamic_variables?.system__called_number || null,
             nombre_paciente,
             producto: data.conversation_initiation_client_data?.dynamic_variables?.producto || null,
-            summary: data.summary || null,
+            summary: data.analysis?.transcript_summary || null,
           };
         } catch {
           return conv;
