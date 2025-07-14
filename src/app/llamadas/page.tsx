@@ -38,9 +38,14 @@ async function traducirTexto(texto: string): Promise<string> {
       })
     });
     const data = await res.json();
-    return data.translatedText || texto;
-  } catch {
-    return texto;
+    if (!data.translatedText) {
+      console.error('Respuesta de traducción inesperada:', data);
+      return '[Error al traducir: respuesta inesperada] ' + texto;
+    }
+    return data.translatedText;
+  } catch (e) {
+    console.error('Error al traducir:', e);
+    return '[Error al traducir] ' + texto;
   }
 }
 
