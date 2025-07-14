@@ -33,7 +33,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Error al obtener conversaciones', status: res.status, body: text }, { status: res.status });
     }
     const data = await res.json();
-    const conversations: Conversation[] = (data.conversations || []).map((conv: any) => {
+    const conversations: Conversation[] = (data.conversations || []).map((conv) => {
       let nombre_paciente = conv.conversation_initiation_client_data?.dynamic_variables?.nombre_paciente || null;
       if (nombre_paciente === 'Leonardo Viano') {
         nombre_paciente = 'Leonardo';
