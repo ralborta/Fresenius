@@ -54,6 +54,8 @@ export default function LlamadasPage() {
   const [conversationDetail, setConversationDetail] = useState<ConversationDetail | null>(null);
   const [translatedSummary, setTranslatedSummary] = useState<string | null>(null);
   const [translating, setTranslating] = useState(false);
+  // Estado para controlar si se debe mostrar el resumen traducido
+  const [showTranslated, setShowTranslated] = useState(false);
 
   useEffect(() => {
     fetchConversations();
@@ -69,6 +71,12 @@ export default function LlamadasPage() {
     } else {
       setTranslatedSummary(null);
     }
+  }, [selectedSummary]);
+
+  // useEffect para limpiar el estado al abrir/cerrar modal
+  useEffect(() => {
+    setShowTranslated(false);
+    setTranslatedSummary(null);
   }, [selectedSummary]);
 
   const fetchConversations = async () => {
@@ -152,6 +160,17 @@ export default function LlamadasPage() {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  // Función para traducir al hacer clic en el botón
+  const handleTranslate = async () => {
+    if (selectedSummary) {
+      setTranslating(true);
+      const traducido = await traducirTexto(selectedSummary);
+      setTranslatedSummary(traducido);
+      setShowTranslated(true);
+      setTranslating(false);
+    }
   };
 
   if (loading) {
@@ -297,8 +316,19 @@ export default function LlamadasPage() {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-gray-700 mb-2">Resumen de la Llamada</h3>
                   <p className="text-gray-900 whitespace-pre-wrap">
-                    {translating ? 'Cargando traducción...' : translatedSummary || selectedSummary || 'No hay resumen disponible para esta llamada.'}
+                    {showTranslated
+                      ? translatedSummary
+                      : selectedSummary || 'No hay resumen disponible para esta llamada.'}
                   </p>
+                  {!showTranslated && selectedSummary && (
+                    <button
+                      onClick={handleTranslate}
+                      className="mt-4 px-4 py-2 bg-blue-900 text-white rounded hover:bg-blue-800"
+                      disabled={translating}
+                    >
+                      {translating ? 'Traduciendo...' : 'Aceptar y traducir'}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
