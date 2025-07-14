@@ -15,6 +15,26 @@ interface Conversation {
   producto?: string;
 }
 
+// Función para traducir texto usando LibreTranslate
+async function traducirTexto(texto: string): Promise<string> {
+  try {
+    const res = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        q: texto,
+        source: "en",
+        target: "es",
+        format: "text"
+      })
+    });
+    const data = await res.json();
+    return data.translatedText || texto;
+  } catch {
+    return texto;
+  }
+}
+
 export async function GET() {
   const API_KEY = process.env.ELEVENLABS_API_KEY || 'YOUR_API_KEY';
   const AGENT_ID = 'agent_01jyqdepnrf1x9wfrt9kkyy84t';
@@ -67,12 +87,16 @@ export async function GET() {
           if (nombre_paciente === 'Leonardo Viano') {
             nombre_paciente = 'Leonardo';
           }
+          let resumen = data.analysis?.transcript_summary || null;
+          if (resumen) {
+            resumen = await traducirTexto(resumen);
+          }
           return {
             ...conv,
             telefono_destino: data.metadata?.phone_call?.external_number || data.conversation_initiation_client_data?.dynamic_variables?.system__called_number || null,
             nombre_paciente,
             producto: data.conversation_initiation_client_data?.dynamic_variables?.producto || null,
-            summary: data.analysis?.transcript_summary || null,
+            summary: resumen,
           };
         } catch {
           return conv;
