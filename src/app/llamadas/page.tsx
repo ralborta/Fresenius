@@ -28,7 +28,6 @@ export default function LlamadasPage() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [selectedSummary, setSelectedSummary] = useState<string | null>(null);
-  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [conversationDetail, setConversationDetail] = useState<ConversationDetail | null>(null);
 
@@ -95,7 +94,6 @@ export default function LlamadasPage() {
   };
 
   const handleRowClick = async (conversation: Conversation) => {
-    setSelectedConversationId(conversation.conversation_id || null);
     setSelectedSummary(conversation.summary || null);
     
     if (conversation.conversation_id) {
@@ -105,7 +103,6 @@ export default function LlamadasPage() {
 
   const closeModal = () => {
     setSelectedSummary(null);
-    setSelectedConversationId(null);
     setConversationDetail(null);
   };
 
