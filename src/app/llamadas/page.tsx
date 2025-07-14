@@ -259,7 +259,7 @@ export default function LlamadasPage() {
 
       {/* Modal para mostrar detalles */}
       {selectedSummary !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-sm">
           <div className="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full relative">
             <button
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold"
@@ -297,7 +297,7 @@ export default function LlamadasPage() {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-gray-700 mb-2">Resumen de la Llamada</h3>
                   <p className="text-gray-900 whitespace-pre-wrap">
-                    {translating ? 'Traduciendo...' : translatedSummary || selectedSummary || 'No hay resumen disponible para esta llamada.'}
+                    {translating ? 'Cargando traducción...' : translatedSummary || selectedSummary || 'No hay resumen disponible para esta llamada.'}
                   </p>
                 </div>
               </div>
