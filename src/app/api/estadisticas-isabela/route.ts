@@ -79,13 +79,15 @@ export async function GET() {
       })
     );
 
-    const total_calls = detailedConversations.length;
-    const total_minutes = Math.round(detailedConversations.reduce((acc: number, c: Conversation) => acc + (c.call_duration_secs || 0), 0) / 60);
+    // Limitar a las últimas 35 llamadas
+    const last35Conversations = detailedConversations.slice(-35);
+    const total_calls = last35Conversations.length;
+    const total_minutes = Math.round(last35Conversations.reduce((acc: number, c: Conversation) => acc + (c.call_duration_secs || 0), 0) / 60);
 
     return NextResponse.json({
       total_calls,
       total_minutes,
-      conversations: detailedConversations
+      conversations: last35Conversations
     });
   } catch (error) {
     console.error('Error en estadísticas:', error);
