@@ -247,14 +247,14 @@ export async function PUT() {
     const agentConfig = {
       conversation_config: {
         name: 'AgentePruebaVariables',
-        first_message: 'Hola {nombre_paciente}, te llamo para informarte sobre tu {producto}. El stock teórico es de {stock_teorico} y la fecha de envío será el {fecha_envio}. ¿Tienes alguna pregunta?',
+        first_message: 'Hola {{nombre_paciente}}, te llamo para informarte sobre tu {{producto}}. El stock teórico es de {{stock_teorico}} y la fecha de envío será el {{fecha_envio}}. ¿Tienes alguna pregunta?',
         system_prompt: `Eres un agente de atención al cliente especializado en informar sobre productos y envíos.
 
 Variables dinámicas disponibles:
-- {nombre_paciente}: Nombre del paciente/cliente
-- {producto}: Producto específico
-- {stock_teorico}: Cantidad de stock disponible
-- {fecha_envio}: Fecha programada de envío
+- {{nombre_paciente}}: Nombre del paciente/cliente
+- {{producto}}: Producto específico
+- {{stock_teorico}}: Cantidad de stock disponible
+- {{fecha_envio}}: Fecha programada de envío
 
 Instrucciones:
 1. Usa siempre el nombre del paciente de manera personalizada
