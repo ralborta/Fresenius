@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
       variables_normalizadas: dynamicVariablesNormalizadas,
       payload_enviado: batchCallRequest,
       respuesta_elevenlabs: elevenLabsResponse,
-      error_elevenlabs: elevenLabsError ? elevenLabsError.message : null,
+      error_elevenlabs: elevenLabsError ? (elevenLabsError instanceof Error ? elevenLabsError.message : String(elevenLabsError)) : null,
       debug_info: {
         tipo_variables: typeof variables,
         es_objeto: typeof variables === 'object',
