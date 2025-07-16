@@ -1,6 +1,6 @@
 interface BatchCallRecipient {
   phone_number: string;
-  dynamic_variables?: Record<string, string>;
+  dynamic_variables?: Record<string, string | number | boolean>;
 }
 
 interface BatchCallRequest {

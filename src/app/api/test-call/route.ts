@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
     // Payload para la API de ElevenLabs (siguiendo las recomendaciones del proveedor y soporte)
     const recipient = {
       phone_number: phoneNumber,
-      ...dynamicVariablesNormalizadas
+      dynamic_variables: dynamicVariablesNormalizadas
     };
     const batchCallRequest = {
       call_name: `Test Call - ${new Date().toISOString()}`,
@@ -243,13 +243,33 @@ export async function PUT() {
     if (!apiKey) {
       return NextResponse.json({ error: 'API key de ElevenLabs no configurada' }, { status: 500 });
     }
+    
     const agentConfig = {
       conversation_config: {
-        name: 'AgentePruebaMinimo',
-        first_message: 'Hola {nombre_paciente}',
-        system_prompt: 'Agente de prueba para test de variables dinámicas.'
+        name: 'AgentePruebaVariables',
+        first_message: 'Hola {nombre_paciente}, te llamo para informarte sobre tu {producto}. El stock teórico es de {stock_teorico} y la fecha de envío será el {fecha_envio}. ¿Tienes alguna pregunta?',
+        system_prompt: `Eres un agente de atención al cliente especializado en informar sobre productos y envíos.
+
+Variables dinámicas disponibles:
+- {nombre_paciente}: Nombre del paciente/cliente
+- {producto}: Producto específico
+- {stock_teorico}: Cantidad de stock disponible
+- {fecha_envio}: Fecha programada de envío
+
+Instrucciones:
+1. Usa siempre el nombre del paciente de manera personalizada
+2. Proporciona información clara sobre el producto
+3. Confirma el stock y la fecha de envío
+4. Responde preguntas sobre el proceso de envío
+5. Sé amigable y profesional
+
+Si el cliente pregunta por información que no tienes, indícale que necesitarás consultar con el equipo correspondiente.`
       }
     };
+    
+    console.log('=== CREANDO AGENTE DE PRUEBA ===');
+    console.log('Configuración del agente:', JSON.stringify(agentConfig, null, 2));
+    
     const response = await fetch('https://api.elevenlabs.io/v1/convai/agents/create', {
       method: 'POST',
       headers: {
@@ -258,12 +278,29 @@ export async function PUT() {
       },
       body: JSON.stringify(agentConfig),
     });
+    
     const data = await response.json();
+    console.log('Respuesta de ElevenLabs:', JSON.stringify(data, null, 2));
+    
     if (!response.ok) {
-      return NextResponse.json({ error: 'Error al crear agente', details: data }, { status: response.status });
+      return NextResponse.json({ 
+        error: 'Error al crear agente', 
+        details: data,
+        status: response.status 
+      }, { status: response.status });
     }
-    return NextResponse.json({ success: true, agent_id: data.agent_id, details: data });
+    
+    return NextResponse.json({ 
+      success: true, 
+      agent_id: data.agent_id, 
+      details: data,
+      message: 'Agente creado exitosamente con configuración para variables dinámicas'
+    });
   } catch (error) {
-    return NextResponse.json({ error: 'Error interno al crear agente', details: error instanceof Error ? error.message : error }, { status: 500 });
+    console.error('Error al crear agente:', error);
+    return NextResponse.json({ 
+      error: 'Error interno al crear agente', 
+      details: error instanceof Error ? error.message : error 
+    }, { status: 500 });
   }
 } 
